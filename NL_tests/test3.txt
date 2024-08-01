@@ -1,0 +1,19 @@
+select the last layer in the layer editor
+select the 'Tasks' tab in the layer editor nav bar
+    content related to creating layouts is now visible
+select the button labeled 'New Layout' in the canvas
+    the canvas has a new layout card
+    empty canvas instructions are removed.
+click the dropdown menu button on the first layout card
+    options to remove and duplicate for the first layout card are now visible
+click the button to duplicate the first layout card
+    there is now a second layout card
+    the second layout card is labeled that it is a copy of the first
+click on the first layout card
+    the layout builder is now visible
+Assert the the check box next to the text that says 'Visible' is currently checked
+type 'example title' into the input box under the text layout title under layout properties
+    the text in the input box nunder the text layout should now be titled 'example title'
+    above the layout editor there should be text saying 'example title'
+click the save button
+    a calcite alert should display saying that the layout changes were saved successfully
