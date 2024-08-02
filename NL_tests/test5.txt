@@ -1,0 +1,12 @@
+/run ./training-out/create_new_layout
+
+drag the 'edit field' layout element to the fa-action-card-list element in the canvas
+    an 'edit field' card should be visible in the canvas and its properties panel shows up over the layout builder panel
+rename the display name from 'edit field' to 'test field name'
+    the heading of the corresponding edit field card should change from 'edit field' to 'test field name'
+click on the duplicate button on the 'edit field' card
+    another card with title 'Copy of <original card title>' should appear
+Drag the card 'Copy of edit field' above 'edit field' to switch their order
+    the card 'Copy of edit field' should appear before the card 'edit field'
+click the save button
+    a calcite alert should display saying that the layout changes were saved successfully

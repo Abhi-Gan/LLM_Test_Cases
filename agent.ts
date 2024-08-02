@@ -61,6 +61,10 @@ export class WebAgent {
         this.gamma = gamma;
     }
 
+    public async waitTime(seconds:number) {
+        await this.page!.waitForTimeout(seconds * 1000);
+    }
+
     public async loadPage(webapp_url = this.webapp_url) {
         // load 
         const browser = await chromium.launch({ "headless": false }); //, slowMo: 100
@@ -159,7 +163,7 @@ export class WebAgent {
 
         const completion = await this.llmClient.chat.completions.create({
             messages: allMessages,
-            model: "gpt-3.5-turbo-0125",
+            model: "gpt-4o-mini-2024-07-18", // "gpt-3.5-turbo-0125",
             n: 1,
             temperature: 0.1,
             response_format: response_format
@@ -598,6 +602,8 @@ ${WebAgent.tripleBackQuotes}
 ${domTreeString}
 ${WebAgent.tripleBackQuotes}
 
+In this DOM Tree Structure, '...' refers to a Shadow Root.
+
 Your task is to:
 \`\`\`
 Output a string representing an action that may accomplish the above task.
@@ -614,29 +620,29 @@ Each interaction should be provided in JSON format with the following structure:
 Follow the following steps as a guide:
 
 Step 1: What part(s) of the DOM Tree above is relevant to the step "${wfStep}"?
- - consider that relevant element(s) may not be exact string matches
- - consider the step is written without knowledge of the DOM
+ - consider a user might say something that isn't technically correct. For example when they say to click a certain button the element being referred to may not necessarily have 'button' tag, or may have spelling mistakes.
+ - You must infer what elements are relevant based on the semantics of the step and context provided by the DOM.
 
 Step 2: What type of interaction do you want to perform on the above element? (e.g. click, type, etc.)
 
 Step 3: Based on your answer to Step 1, identify the code that in Playwright that should be passed into "locatorCode" that can be used to find the relevant element via a locator.
-        i. Actually, first consider the code required to find the relevant closest ancestor that is not in the Shadow DOM. 
-        ii. From there consider the code necessary to locate the relevant specific element within the Shadow DOM. Go as far down the DOM as possible (more leaf-like is preferred).
+
 Note you can chain locators like page.getByRole('...').locator('...').getByText('...').
+Howevr, try to minimize the number of chained locators while maintaining specificity.
 
 The locators you can may are listed in the examples below.
 
 Also consider these notes:
+ - getByRole locates elements by its implicit role; however doesn't work for custom elements. ex: works for button, but not for CALCIT-LIST-ITEM
+ - getByText can easily match multiple elements so use exact matching and possibly apply another locator before chaining this 
  - Use getByLabel to find alements by associated <label> or aria-label attribute
- - When using any locator that matches by text, use exact matching. Be careful as multiple elements could match.
- - There could be multiple elements that match a locator, so be as specific as possible. We only take the first match.
- - XPath / CSS selectors cannot go through a Shadow DOM; You can try chaining locators to circumvent this.
- - prioritize locators as follows: getByRole > getByLabel > getByText > CSS / XPath selector
+ - You can narrow down the query to the nth match using the nth= locator with a 0 based index; e.g. .locator('nth=4')
+ - Minimize usage of XPath / CSS selectors as they cannot go through a Shadow DOM and are more brittle than other selectors; if needed use chaining instead
  
-We will evaluate the code passed into "locatorCode" to get the relevant element in Playwright. 
+We will evaluate the code passed into "locatorCode" to get the first matching element in Playwright. 
 You are looking at test data so try not to refer to the test data text in your selectors.
 
-Step 4: Verify your code is well-formed Playwright code as described above. If there are errors, chain locators to follow the XPath.
+Step 4: Verify your code is well-formed Playwright code as described above. If there are errors, do your best to fix them. Try to use a different locator.
 
 Step 5: Output the interaction in the JSON format described earlier.
 Your output should be in JSON format. No trailing commas.
@@ -666,6 +672,36 @@ Output:\n`
         return llmResponse;// this.parseElemInteractionResponse(llmResponse);
     }
 
+    public async writeFineTuneEx(wfStep:string, desiredResponse:string) {
+        const domTreeString = await this.getDOMTree(true);
+
+        let prevErrorsMessage = '';
+
+        // create prompt
+        const elemInteractionPrompt = `I need to do the following: ${wfStep}
+
+The webapp has the following DOM Tree Structure (simplified + only human visible elements):
+${WebAgent.tripleBackQuotes}
+${domTreeString}
+${WebAgent.tripleBackQuotes}
+
+Your task is to:
+\`\`\`
+Output a string representing an action that may accomplish the above task.
+...
+Output:\n`
+
+        // write training output
+        const outObj =  { "messages": [
+                {"role": "user", "content": elemInteractionPrompt},
+                {"role": "assistant", "content": desiredResponse}
+            ]
+        }
+
+        // TODO: write outObj
+        console.log("Not done yet!")
+    }
+
     public async runElemInteraction(action:string, locatorCode:string, value?:string, toLocatorCode?:string) {
         // assert page is defined
         const curPage = this.page!;
@@ -677,7 +713,7 @@ Output:\n`
 
         const runnableLocatorCode = locatorCode.replace("page", "curPage") //.replace("getByLabelText", "getByText").replace("firstChild", "first");
         const locator = await eval(`${runnableLocatorCode}`);
-        const firstMatchLocator = locator.first();
+        const firstMatchLocator = locator.first({ timeout: WebAgent.MAX_WAIT });
         await firstMatchLocator.waitFor({ timeout: WebAgent.MAX_WAIT })
 
         switch(action) {
@@ -693,7 +729,10 @@ Output:\n`
                 // type
                 // ensures value is input
                 const valStr = value!;
-                await firstMatchLocator.fill(valStr);
+                // clear
+                await firstMatchLocator.fill('');
+                // use type sequentially instead!
+                await firstMatchLocator.pressSequentially(valStr);
                 break;
             case WebAgent.TAB:
                 // tab
@@ -742,8 +781,17 @@ ${expectations}
 Note: all criteria must be met for the step to be performed.
 Prove if the step was performed. Answer Yes/No and Briefly explain what evidence supports your claim.
 
-Step 3: Score the agent's action between -1 and 1 in regards to the desired action. 
+Step 2: Score the agent's action between -1 and 1 in regards to the desired action. 
 Reward the agent for correct responses and punish it for incorrect ones so it eventually learns how to accomplish the task.
+
+Format your output like so:
+${WebAgent.tripleBackQuotes}
+{
+    "Answer": <'Yes' if step was performed, 'No' otherwise>
+    "Explanation": <brief evidence to support answer>
+    "Score": <score between 0-1>
+}
+${WebAgent.tripleBackQuotes}
 
 Output:
 `;
@@ -850,9 +898,11 @@ Considering your answers to the above questions, provide evidence, then whether 
 
 Format like so:
 ${WebAgent.tripleBackQuotes}
-The node corresponding with the 3rd list element is no longer on the DOM tree so it has been removed
-F
-0.8
+{
+    "isAssertionPassed": <'true' if assertion is true; 'false' otherwise>
+    "evidence": <brief evidence>
+    "confidence": <confidence in correctness of response (0-1)>
+}
 ${WebAgent.tripleBackQuotes}
 
 Your Response:
@@ -862,14 +912,22 @@ Your Response:
     }
 
     // TODO: edit params
-    public async runStep(wfStep:string, expectations?:string, prevDOM?:string):Promise<[string | undefined, number]> {
+    public async runStep(wfStep:string, expectations?:string, prevDOM?:string):Promise<[boolean, string | undefined, number]> {
         let startTime = performance.now();
 
         let afterDOM:string|undefined;
 
+        let passedStep:boolean = false;
+
         if (wfStep.startsWith("Assert")) {
             const curAttrDOM = await this.getDOMTree(true, true);
             const response = await this.runAssertion(wfStep, prevDOM ? prevDOM: 'unknown', curAttrDOM); 
+
+            // parse response
+            if (response.trim().length > 0) {
+                const cleanedResponse = JSON5.parse(response.replace(/```json|```/g, ''));
+                passedStep = cleanedResponse["isAssertionPassed"];
+            }
         }
         else {
             // get dom string before
@@ -889,10 +947,12 @@ Your Response:
 
             const errorMsgs:string[] = [];
             let numTries = 0;
-            while(!successfulInteraction && numTries < 3) {
+            while(!successfulInteraction && numTries < 4) {
                 try {
                     const elemInteractionsStr = await this.getElemInteractions(wfStep, errorMsgs);
-                    const elemInteractionObj = JSON5.parse(elemInteractionsStr);
+                    // Remove the "```json" and "```" tags from the string
+                    const cleanedResponse = elemInteractionsStr.replace(/```json|```/g, '');
+                    const elemInteractionObj = JSON5.parse(cleanedResponse);
                     try {
                         const curDict = elemInteractionObj; //elemInteractionsList[curIdx];
                         const action = curDict["action"];
@@ -910,27 +970,35 @@ Your Response:
                         const renderExpectations = expectations ? expectations : 'unknown';
                         // LLM: was desired action performed?
                         const response = await this.askCorrectAction(wfStep, renderExpectations, beforeDOM, afterDOM);
-                    
+                        const cleanedResponse = JSON5.parse(response.replace(/```json|```/g, ''));
+
                         // TODO: based on response decide if interaction is success or not
-                        successfulInteraction = true;
+                        successfulInteraction = cleanedResponse["Answer"].toLowerCase() === "yes" // true;
                     }
                     catch (error) {
                         console.log(`Error with step ${wfStep}!\n${error}`)
-                        const errorInfoStr = `${error}`;
+
+                        const responseStr = JSON.stringify(elemInteractionObj)
+                        const errorStr:string = `${error}` // .slice(0,200)
+                        // ${responseStr}
+                        const errorInfoStr = `Bad response; led to error: ${errorStr}...`;
                         errorMsgs.push(errorInfoStr);
                     }
                 }
                 catch (error) {
-                    console.log(error);
+                    errorMsgs.push(error as string)
+                    //console.log(error);
                 }
 
                 numTries += 1
             }
+
+            passedStep = successfulInteraction;
         }
         
         startTime = performance.now() - startTime;
 
-        return [afterDOM, startTime];
+        return [passedStep, afterDOM, startTime];
     }
 
     public async runInteractionTest() {

@@ -129,38 +129,36 @@ async function tryAgent() {
     // console.log(elemInteractionsList);
     // may have to try multiple options in the list to get correct one
     await curAgent.runElemInteraction("click", "page.getByText('New layout', { exact: true })"); //"page.getByRole('button', { name: 'New layout' })" //"CALCITE-BUTTON:contains('New layout')"
-    await curAgent.runElemInteraction("click", "page.getByText('Form', { exact: true })");
+    // await curAgent.runElemInteraction("click", "page.getByText('Form', { exact: true })");
     // to remove the element
     curDomTreeString = await curAgent.getDOMTree();
     // console.log(`afterDomTreeString:\n${curDomTreeString}`);
     // console.log("==");
+    //"page.getByRole('button', { name: 'Discard changes' })"
+    // await curAgent.runStep("click on the discard changes button in the modal");
+    //await curAgent.runElemInteraction("click", "page.getByText('Discard changes')");
+    // await curAgent.runStep("click on the discard changes button in the modal", "    - the form tab is selected and the form builder is visible");
     // let elemInteractionsList = await curAgent.getElemInteractions("click the dropdown menu button on the first layout card");
-    /*await curAgent.runElemInteraction("click", "page.locator('FA-LAYOUT-CARD CALCITE-DROPDOWN CALCITE-BUTTON')");
-
+    // await curAgent.runElemInteraction("click", "page.locator('FA-LAYOUT-CARD CALCITE-DROPDOWN CALCITE-BUTTON')");
     curDomTreeString = await curAgent.getDOMTree();
     console.log(`afterDomTreeString:\n${curDomTreeString}`);
     console.log("==");
     // let elemInteractionsList = await curAgent.getElemInteractions("click the remove button");
     // await curAgent.runElemInteraction("click", "page.getByText('Remove')");
-
-    
-    await curAgent.runElemInteraction("click", "page.getByText('Duplicate')")
-    // await curAgent.runStep("click the button to duplicate the first layout card",
+    // await curAgent.runElemInteraction("click", "page.getByText('Duplicate')")
+    // await curAgent.runStep("duplicate the first layout card", 
     //     "    - there is now a second layout card\n    - the second layout card is labeled that it is a copy of the first");
-
-
-   const beforeDOM = await curAgent.getDOMTree(true, false);
+    const beforeDOM = await curAgent.getDOMTree(true, false);
     // console.log(`afterDomTreeString:\n${curDomTreeString}`);
     // console.log("==");
     // await curAgent.getElemInteractions("click on the first layout card");
-//    await curAgent.runStep("click on the first layout card", "layout builder panel is now visible")
+    // await curAgent.runStep("click on the first layout card", "layout builder panel is now visible")
     await curAgent.runElemInteraction("click", "page.locator('FA-LAYOUT-CARD')");
-
-//    await curAgent.runStep("Assert the check box next to the text that says 'Visible' is currently checked", undefined, beforeDOM);
-//    const afterDOM = await curAgent.getDOMTree(true, false); //true, false
-    const afterDOMAttr = await curAgent.getDOMTree(true, true);
-//    console.log(`afterDomTreeString:\n${afterDOMAttr}`);
-    console.log("==");*/
+    //    await curAgent.runStep("Assert the check box next to the text that says 'Visible' is currently checked", undefined, beforeDOM);
+    const afterDOM = await curAgent.getDOMTree(true, false); //true, false
+    // const afterDOMAttr = await curAgent.getDOMTree(true, true);
+    //    console.log(`afterDomTreeString:\n${afterDOMAttr}`);
+    console.log("==");
     // -const assertionVal = await curAgent.runAssertion("the check box next to the text that says 'Visible' is not currently checked", beforeDOM, afterDOMAttr);
     // console.log(`assertionVal: ${assertionVal}`);
     // "click on the first layout card"
@@ -170,15 +168,32 @@ async function tryAgent() {
     //    await curAgent.runStep("Select the undo button (leftmost button in the group of buttons to the right of the Forms nav bar)");
     // doesnt work: await curAgent.getElemInteractions("drag the edit field layout element to the area which says 'Drag layout elements into this area'");
     // await curAgent.runElemInteraction("dragAndDrop", "page.getByText('Edit Field')", undefined, "page.getByText('Drag layout elements to this area')");
-    //   // await curAgent.runStep("type 'example title' into the input box under the text 'layout title'",
+    //await curAgent.runElemInteraction("dragAndDrop", "page.getByText('Edit Field')", undefined, "page.locator('FA-ACTION-CARD-LIST')")
+    // await curAgent.runStep("type 'example title' into the input box under the text 'layout title'",
     //     "    - the text in the input box under the text 'layout title' should now be titled 'example title'\n    - above the layout editor there should be text saying 'example title'",
     //     undefined
     // );
+    await curAgent.runElemInteraction("type", "page.getByLabel('Layout title').locator('input')", "test layout title");
+    await curAgent.getDOMTree();
+    await curAgent.runElemInteraction("click", "page.getByText('Layouts').locator('..').getByRole('combobox')");
+    // await curAgent.runElemInteraction("type", "page.getByLabel('Display name*').locator('input')", "test field name")
     //    await curAgent.getElemInteractions("type 'example title' into the input box under the text layout title under layout properties");
     // await curAgent.runElemInteraction("type", "page.locator('fa-layout-properties').locator('face-validated-form').locator('face-validated-label').locator('face-validated-input').locator('calcite-input-text').locator('input')", "example title");
-    await curAgent.runStep("click the save button", "a calcite alert should display saying that the layout changes were saved successfully", undefined);
+    // await curAgent.runStep("click the save button", 
+    //     "a calcite alert should display saying that the layout changes were saved successfully",
+    //     undefined
+    // )
     // await curAgent.testFindingLocator();
     //await curAgent.runInteractionTest();
+    // await curAgent.runStep("click on the duplicate button on the 'edit field' card", 
+    //     "    - another card with title 'Copy of <original card title>' should appear"
+    // )
+    // await curAgent.getDOMTree();
+    // await curAgent.runElemInteraction("click", "page.getByRole('button', { name: 'Duplicate' })")
+    // await curAgent.runStep("Drag the card 'Copy of test field name' to the card 'test field name'",
+    //     "    - the card 'Copy of test field name' should now be above the card 'test field name'"
+    // )
+    // await curAgent.runElemInteraction("dragAndDrop", "page.getByText('Copy of test field name')", undefined, "page.getByText('test field name')");
     console.log("done");
 }
 async function runSampleTest(app_description, webapp_url, testFname, indent = '    ') {
@@ -220,16 +235,52 @@ async function runSampleTest(app_description, webapp_url, testFname, indent = ' 
         console.log(seStr);
         // runStep - include prevDOM if this is an assertion
         const isAssert = curStep.step.startsWith("Assert");
-        if (isAssert) {
-            // pass in prevDOM (so can be compared to current)
-            await curAgent.runStep(wfStep, seStr, prevDOM);
+        const isRun = curStep.step.startsWith("/run");
+        if (isRun) {
+            const fname = curStep.step.split(' ')[1];
+            const elemInteractionsLines = fs.readFileSync(fname, 'utf-8').split("\n");
+            console.log(elemInteractionsLines);
+            for (const line of elemInteractionsLines) {
+                const trimmedLine = line.trim();
+                if (trimmedLine.length > 0) {
+                    const lineArr = await eval(`[${trimmedLine}]`);
+                    console.log(lineArr);
+                    const interaction = lineArr[0];
+                    const locatorCode = lineArr[1];
+                    const value = lineArr.length > 3 ? lineArr[2] : undefined;
+                    const toLocatorCode = lineArr.length > 4 ? lineArr[3] : undefined;
+                    await curAgent.runElemInteraction(interaction, locatorCode, value, toLocatorCode);
+                }
+            }
         }
         else {
-            // normal wf step: doesn't need prev dom
-            // just pass in wfStep and expectations
+            // normal wf step doesn't need prev dom
+            const passPrevDOM = isAssert ? prevDOM : undefined;
             let stepTime = 0;
-            [prevDOM, stepTime] = await curAgent.runStep(wfStep, seStr, undefined);
+            let passedStep = false;
+            [passedStep, prevDOM, stepTime] = await curAgent.runStep(wfStep, seStr, passPrevDOM);
             stepTimes.push(stepTime / 1000); // get time in sec
+            console.log(`${passedStep ? 'passed' : 'failed'} step.`);
+            if (!passedStep) {
+                break;
+            }
+            // if (isAssert) {
+            //     // pass in prevDOM (so can be compared to current)
+            //     //console.log(`skipping assertion:${curStep}`);
+            //     await curAgent.runStep(wfStep, seStr, prevDOM);
+            // }
+            // else {
+            //     // normal wf step: doesn't need prev dom
+            //     // just pass in wfStep and expectations
+            //     let stepTime = 0;
+            //     let passedStep:boolean = false;
+            //     [passedStep, prevDOM, stepTime] = await curAgent.runStep(wfStep, seStr, undefined)
+            //     stepTimes.push(stepTime / 1000); // get time in sec
+            //     console.log(`${passedStep ? 'passed' : 'failed'} step.`)
+            //     if (!passedStep) {
+            //         break;
+            //     }
+            // }
         }
         // TODO: incorporate accuracy
         // console.log("should ask for eval")
@@ -260,5 +311,5 @@ if (fs.existsSync(training_out_dir)) {
 fs.mkdirSync(training_out_dir);
 const out_fpath = path.join(training_out_dir, "test.txt");
 // run(webapp_url, out_fpath);
-tryAgent();
-//runSampleTest("app that lets you configure layers and layouts", webapp_url, "./NL_tests/test1.txt");
+//tryAgent();
+runSampleTest("app that lets you configure layers and layouts", webapp_url, "./NL_tests/test4.txt");

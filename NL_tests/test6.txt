@@ -1,0 +1,11 @@
+/run ./training-out/create_new_layout
+
+rename the layout title to 'test layout title'
+    the value of the input box under 'layout title' should now say 'test layout title'
+    the heading of the card list in the canvas should now be 'test layout title'
+click on the combobox under the text 'Layouts'
+    layout options of 'All' and 'test layout title' should appear in the dropdown
+click on 'All'
+    the layout builder is no longer visible
+    the dropdown under the text 'Layouts' now says 'All'
+    the layout card 'test layout title' is visible

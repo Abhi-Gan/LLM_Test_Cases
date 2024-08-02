@@ -1,0 +1,4 @@
+"click", "page.locator('CALCITE-LIST-ITEM:last-child')"
+"click", "page.getByText('Tasks')"
+"click", "page.getByText('New layout', { exact: true })"
+"click", "page.locator('FA-LAYOUT-CARD')"

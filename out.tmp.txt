@@ -1,0 +1,2584 @@
+Prompt:
+I need to do the following: drag the 'Attach' layout element to the fa-action-card-list element in the canvas
+
+The webapp has the following DOM Tree Structure (simplified + only human visible elements):
+```
+BODY
+---DIV
+---HEADER
+------A (aria-label: "Field Maps Designer home page") > svg > path
+------DIV
+------NAV (aria-label: "Breadcrumb") > OL
+------------LI > A > "Maps"
+------------LI
+---------------CALCITE-ICON > ... > svg > path
+---------------LI (aria-label: "Map title: “itaque torrens aetas admiratio”") > "itaque torrens aetas admiratio"
+------------LI
+---------------CALCITE-ICON > ... > svg > path
+---------------LI (aria-label: "Layer title: “Fort Elyssa”") > "Fort Elyssa"
+------DIV > UL
+------------LI > DIV > CALCITE-DROPDOWN
+---------------------... > DIV > DIV
+---------------------CALCITE-BUTTON
+------------------------... > DIV > BUTTON
+---------------------------------CALCITE-ICON > ... > svg > path
+---------------------------------SPAN
+------------------------"local"
+------------LI > A > "Resources"
+------------DIV
+------------LI > DIV > DIV > BUTTON
+------------------------DIV > DIV > "LS"
+------------------------SPAN > "Lillie"
+---MAIN > DIV > DIV
+------------CALCITE-ACTION-BAR
+---------------... > CALCITE-ACTION-GROUP
+---------------------... > DIV
+---------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Collapse")
+---------------------------------DIV > CALCITE-ICON > ... > svg > path
+---------------------------------DIV > "Collapse"
+---------------CALCITE-ACTION-GROUP
+------------------... > DIV
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Overview")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Overview"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Forms (Indicator present)")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Forms"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Geofences")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Geofences"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Offline")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Offline"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "App settings")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "App settings"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Sharing")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Sharing"
+---------------CALCITE-ACTION-MENU
+------------------...
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Open")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Open"
+---------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "What’s New (Indicator present)")
+---------------------------DIV > CALCITE-ICON > ... > svg > path
+---------------------------DIV > "What’s New"
+------------DIV
+---------------HEADER > SPAN > "Forms"
+---------------DIV
+------------------INPUT
+------------------BUTTON (aria-label: "Filter content") > CALCITE-ICON > ... > svg > path
+---------------DIV
+------------------CALCITE-BLOCK
+---------------------... > DIV > ARTICLE
+------------------------------DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Layers"
+------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------SECTION
+---------------------CALCITE-LIST
+------------------------... > DIV > DIV
+---------------------------------DIV
+------------------------------------DIV > "Total items: 4."
+------------------------------------OL
+---------------------------------TABLE > TBODY
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"New Lelah"
+---------------------------DIV > CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"South Franciscoburgh"
+---------------------------DIV > CALCITE-ICON > ... > svg
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"Vonland"
+---------------------------DIV > CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"Fort Elyssa"
+---------------------------DIV
+------------------------------CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------------CALCITE-ICON > ... > svg > path
+------------------CALCITE-BLOCK > ... > DIV > ARTICLE > DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Tables"
+------------------------------------CALCITE-ICON > ... > svg > path
+------------------CALCITE-BLOCK > ... > DIV > ARTICLE > DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Basemap"
+------------------------------------CALCITE-ICON > ... > svg > path
+---------------CALCITE-SPLIT-BUTTON > ... > DIV > DIV
+---------------------------CALCITE-BUTTON
+------------------------------... > DIV > BUTTON > SPAN
+------------------------------"Add layers"
+---------------------------DIV > DIV
+---------------------------CALCITE-DROPDOWN
+------------------------------... > DIV > DIV
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Add existing layers or create new layers") > CALCITE-ICON > ... > svg > path
+------------DIV > DIV
+------------------CALCITE-TABS
+---------------------... > SECTION
+---------------------DIV > DIV
+---------------------------CALCITE-TAB-NAV
+------------------------------... > DIV
+------------------------------------DIV
+------------------------------------DIV > DIV
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Form"
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Templates"
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Tasks"
+---------------------------DIV
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Undo: Create layout") > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Save") > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-DROPDOWN
+---------------------------------... > DIV > DIV
+---------------------------------CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+---------------------CALCITE-TAB
+------------------------... > DIV > SECTION
+------------------------DIV > FA-LAYOUT-EDITOR > DIV
+---------------------------------FA-LAYOUTS-DROPDOWN > CALCITE-LABEL
+---------------------------------------... > DIV
+---------------------------------------DIV
+------------------------------------------SPAN > "Layouts"
+------------------------------------------CALCITE-ICON (aria-label: "information icon") > ... > svg > path
+---------------------------------------CALCITE-COMBOBOX > ... > DIV
+------------------------------------------------DIV
+---------------------------------------------------DIV
+------------------------------------------------------LABEL > "Layouts"
+------------------------------------------------------SPAN > SPAN > "New layout"
+---------------------------------------------------SPAN > CALCITE-ICON > ... > svg > path
+------------------------------------------------UL
+---------------------------------------------------LI > "All"
+---------------------------------------------------LI > "New layout"
+---------------------------------P > "New layout"
+---------------------------------FA-ACTION-CARD-LIST > FACE-SORTABLE-LIST > ... > SECTION
+------------------DIV > FACE-SIDE-PANEL-STACK
+------------------------... > DIV > CALCITE-PANEL > ... > DIV > ARTICLE
+------------------------------------------HEADER > DIV > DIV > DIV > "Layout builder"
+------------------------------------------DIV
+------------------------DIV
+---------------------------FA-LAYOUT-PROPERTIES > CALCITE-BLOCK
+---------------------------------... > DIV > ARTICLE
+------------------------------------------DIV > BUTTON
+------------------------------------------------HEADER > DIV > DIV > "Layout properties"
+------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------SECTION
+---------------------------------FACE-VALIDATED-FORM > FORM > FACE-VALIDATED-LABEL
+------------------------------------------... > CALCITE-LABEL
+------------------------------------------------... > DIV
+------------------------------------------------DIV > SPAN > "Layout title"
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Layout title") > ... > DIV > CALCITE-INPUT-TEXT > ... > DIV > DIV > DIV > INPUT
+---------------------------------DIV > DIV
+---------------------------------------CALCITE-LABEL
+------------------------------------------... > DIV
+------------------------------------------CALCITE-CHECKBOX > ... > DIV > DIV (aria-label: "Visible") > svg > path
+------------------------------------------DIV > P > "Visible"
+---------------------------------------DIV > CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+---------------------------FA-ACTIONS-BUILDER > CALCITE-BLOCK
+---------------------------------... > DIV > ARTICLE
+------------------------------------------DIV > BUTTON
+------------------------------------------------HEADER > DIV > DIV > "Layout elements"
+------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------SECTION
+---------------------------------CALCITE-LIST
+------------------------------------... > DIV > DIV
+---------------------------------------------DIV
+------------------------------------------------DIV > "Total items: 16."
+------------------------------------------------OL
+---------------------------------------------TABLE
+------------------------------------------------THEAD > TR > TH > CALCITE-STACK
+------------------------------------------------------------... > DIV > DIV
+------------------------------------------------------------CALCITE-FILTER (aria-label: "Find action") > ... > DIV > DIV > LABEL > CALCITE-INPUT > ... > DIV > DIV > DIV
+------------------------------------------------------------------------------------------INPUT (aria-label: "Filter")
+------------------------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------TBODY
+------------------------------------CALCITE-LIST-ITEM-GROUP
+---------------------------------------... > DIV > TR > TD > "CONFIGURABLE"
+---------------------------------------FACE-SORTABLE-LIST
+------------------------------------------... > SECTION
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Edit Field"
+------------------------------------------------CALCITE-ICON (aria-label: "Edit Field") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Integration"
+------------------------------------------------CALCITE-ICON (aria-label: "Integration") > ... > svg > path
+------------------------------------CALCITE-LIST-ITEM-GROUP
+---------------------------------------... > DIV > TR > TD > "SYSTEM"
+---------------------------------------FACE-SORTABLE-LIST
+------------------------------------------... > SECTION
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Attach"
+------------------------------------------------CALCITE-ICON (aria-label: "Attach") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Choose File"
+------------------------------------------------CALCITE-ICON (aria-label: "Choose File") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Choose Photo or Video"
+------------------------------------------------CALCITE-ICON (aria-label: "Choose Photo or Video") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+```
+
+In this DOM Tree Structure, '...' refers to a Shadow Root.
+
+Your task is to:
+```
+Output a string representing an action that may accomplish the above task.
+
+Each interaction should be provided in JSON format with the following structure:
+{
+  "action": "click|enter|type|tab|dragAndDrop|expect",
+  "locatorCode": "code (to get the relevant element in Playwright)",
+  "value": "value (only for type action)",
+  "toLocatorCode": "code of locator for element to which first locator is being dragged to (only for dragAndDrop action)"
+}
+```
+
+Follow the following steps as a guide:
+
+Step 1: What part(s) of the DOM Tree above is relevant to the step "drag the 'Attach' layout element to the fa-action-card-list element in the canvas"?
+ - consider a user might say something that isn't technically correct. For example when they say to click a certain button the element being referred to may not necessarily have 'button' tag, or may have spelling mistakes.
+ - You must infer what elements are relevant based on the semantics of the step and context provided by the DOM.
+
+Step 2: What type of interaction do you want to perform on the above element? (e.g. click, type, etc.)
+
+Step 3: Based on your answer to Step 1, identify the code that in Playwright that should be passed into "locatorCode" that can be used to find the relevant element via a locator.
+
+Note you can chain locators like page.getByRole('...').locator('...').getByText('...').
+Howevr, try to minimize the number of chained locators while maintaining specificity.
+
+The locators you can may are listed in the examples below.
+
+Also consider these notes:
+ - getByRole locates elements by its implicit role; however doesn't work for custom elements. ex: works for button, but not for CALCIT-LIST-ITEM
+ - getByText can easily match multiple elements so use exact matching and possibly apply another locator before chaining this 
+ - Use getByLabel to find alements by associated <label> or aria-label attribute
+ - You can narrow down the query to the nth match using the nth= locator with a 0 based index; e.g. .locator('nth=4')
+ - Minimize usage of XPath / CSS selectors as they cannot go through a Shadow DOM and are more brittle than other selectors; if needed use chaining instead
+ 
+We will evaluate the code passed into "locatorCode" to get the first matching element in Playwright. 
+You are looking at test data so try not to refer to the test data text in your selectors.
+
+Step 4: Verify your code is well-formed Playwright code as described above. If there are errors, do your best to fix them. Try to use a different locator.
+
+Step 5: Output the interaction in the JSON format described earlier.
+Your output should be in JSON format. No trailing commas.
+
+Examples:
+```
+// getByRole
+{"action": "click", "locatorCode:”page.getByRole('button', { name: submit }”)}
+// getByLabel
+{"action": “enter”, "locatorCode:”page.getByLabel('Password’)”}
+// getByText
+{"action": “tab”, "locatorCode:”page.getByText('Welcome, John'), { exact: true }”}
+// getByTestID
+{"action": “type”, "locatorCode:”page.getByTestId('directions’)”, “value”:”180 New York Streets”}
+// XPath:
+{"action": "click", "locatorCode": "page.locator('[data-test-interactions]');"}
+// CSS:
+{"action": "click", "locatorCode": "CALCITE-LIST-ITEM:nth-child(4)"}
+```
+
+Recall, I need to: drag the 'Attach' layout element to the fa-action-card-list element in the canvas 
+
+Output:
+---
+Response:```json
+{
+  "action": "dragAndDrop",
+  "locatorCode": "page.getByText('Attach')",
+  "toLocatorCode": "page.locator('FA-ACTION-CARD-LIST')"
+}
+```
+---
+Prompt:
+An agent is exploring a web page, and is supposed to perform the following: drag the 'Attach' layout element to the fa-action-card-list element in the canvas
+
+The agent performed some action on the page.
+
+The webapp has the following DOM Tree Structure (simplified + only human visible elements) before the action:
+```
+BODY
+---DIV
+---HEADER
+------A (aria-label: "Field Maps Designer home page") > svg > path
+------DIV
+------NAV (aria-label: "Breadcrumb") > OL
+------------LI > A > "Maps"
+------------LI
+---------------CALCITE-ICON > ... > svg > path
+---------------LI (aria-label: "Map title: “itaque torrens aetas admiratio”") > "itaque torrens aetas admiratio"
+------------LI
+---------------CALCITE-ICON > ... > svg > path
+---------------LI (aria-label: "Layer title: “Fort Elyssa”") > "Fort Elyssa"
+------DIV > UL
+------------LI > DIV > CALCITE-DROPDOWN
+---------------------... > DIV > DIV
+---------------------CALCITE-BUTTON
+------------------------... > DIV > BUTTON
+---------------------------------CALCITE-ICON > ... > svg > path
+---------------------------------SPAN
+------------------------"local"
+------------LI > A > "Resources"
+------------DIV
+------------LI > DIV > DIV > BUTTON
+------------------------DIV > DIV > "LS"
+------------------------SPAN > "Lillie"
+---MAIN > DIV > DIV
+------------CALCITE-ACTION-BAR
+---------------... > CALCITE-ACTION-GROUP
+---------------------... > DIV
+---------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Collapse")
+---------------------------------DIV > CALCITE-ICON > ... > svg > path
+---------------------------------DIV > "Collapse"
+---------------CALCITE-ACTION-GROUP
+------------------... > DIV
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Overview")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Overview"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Forms (Indicator present)")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Forms"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Geofences")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Geofences"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Offline")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Offline"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "App settings")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "App settings"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Sharing")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Sharing"
+---------------CALCITE-ACTION-MENU
+------------------...
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Open")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Open"
+---------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "What’s New (Indicator present)")
+---------------------------DIV > CALCITE-ICON > ... > svg > path
+---------------------------DIV > "What’s New"
+------------DIV
+---------------HEADER > SPAN > "Forms"
+---------------DIV
+------------------INPUT
+------------------BUTTON (aria-label: "Filter content") > CALCITE-ICON > ... > svg > path
+---------------DIV
+------------------CALCITE-BLOCK
+---------------------... > DIV > ARTICLE
+------------------------------DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Layers"
+------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------SECTION
+---------------------CALCITE-LIST
+------------------------... > DIV > DIV
+---------------------------------DIV
+------------------------------------DIV > "Total items: 4."
+------------------------------------OL
+---------------------------------TABLE > TBODY
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"New Lelah"
+---------------------------DIV > CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"South Franciscoburgh"
+---------------------------DIV > CALCITE-ICON > ... > svg
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"Vonland"
+---------------------------DIV > CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"Fort Elyssa"
+---------------------------DIV
+------------------------------CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------------CALCITE-ICON > ... > svg > path
+------------------CALCITE-BLOCK > ... > DIV > ARTICLE > DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Tables"
+------------------------------------CALCITE-ICON > ... > svg > path
+------------------CALCITE-BLOCK > ... > DIV > ARTICLE > DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Basemap"
+------------------------------------CALCITE-ICON > ... > svg > path
+---------------CALCITE-SPLIT-BUTTON > ... > DIV > DIV
+---------------------------CALCITE-BUTTON
+------------------------------... > DIV > BUTTON > SPAN
+------------------------------"Add layers"
+---------------------------DIV > DIV
+---------------------------CALCITE-DROPDOWN
+------------------------------... > DIV > DIV
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Add existing layers or create new layers") > CALCITE-ICON > ... > svg > path
+------------DIV > DIV
+------------------CALCITE-TABS
+---------------------... > SECTION
+---------------------DIV > DIV
+---------------------------CALCITE-TAB-NAV
+------------------------------... > DIV
+------------------------------------DIV
+------------------------------------DIV > DIV
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Form"
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Templates"
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Tasks"
+---------------------------DIV
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Undo: Create layout") > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Save") > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-DROPDOWN
+---------------------------------... > DIV > DIV
+---------------------------------CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+---------------------CALCITE-TAB
+------------------------... > DIV > SECTION
+------------------------DIV > FA-LAYOUT-EDITOR > DIV
+---------------------------------FA-LAYOUTS-DROPDOWN > CALCITE-LABEL
+---------------------------------------... > DIV
+---------------------------------------DIV
+------------------------------------------SPAN > "Layouts"
+------------------------------------------CALCITE-ICON (aria-label: "information icon") > ... > svg > path
+---------------------------------------CALCITE-COMBOBOX > ... > DIV
+------------------------------------------------DIV
+---------------------------------------------------DIV
+------------------------------------------------------LABEL > "Layouts"
+------------------------------------------------------SPAN > SPAN > "New layout"
+---------------------------------------------------SPAN > CALCITE-ICON > ... > svg > path
+------------------------------------------------UL
+---------------------------------------------------LI > "All"
+---------------------------------------------------LI > "New layout"
+---------------------------------P > "New layout"
+---------------------------------FA-ACTION-CARD-LIST > FACE-SORTABLE-LIST > ... > SECTION
+------------------DIV > FACE-SIDE-PANEL-STACK
+------------------------... > DIV > CALCITE-PANEL > ... > DIV > ARTICLE
+------------------------------------------HEADER > DIV > DIV > DIV > "Layout builder"
+------------------------------------------DIV
+------------------------DIV
+---------------------------FA-LAYOUT-PROPERTIES > CALCITE-BLOCK
+---------------------------------... > DIV > ARTICLE
+------------------------------------------DIV > BUTTON
+------------------------------------------------HEADER > DIV > DIV > "Layout properties"
+------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------SECTION
+---------------------------------FACE-VALIDATED-FORM > FORM > FACE-VALIDATED-LABEL
+------------------------------------------... > CALCITE-LABEL
+------------------------------------------------... > DIV
+------------------------------------------------DIV > SPAN > "Layout title"
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Layout title") > ... > DIV > CALCITE-INPUT-TEXT > ... > DIV > DIV > DIV > INPUT
+---------------------------------DIV > DIV
+---------------------------------------CALCITE-LABEL
+------------------------------------------... > DIV
+------------------------------------------CALCITE-CHECKBOX > ... > DIV > DIV (aria-label: "Visible") > svg > path
+------------------------------------------DIV > P > "Visible"
+---------------------------------------DIV > CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+---------------------------FA-ACTIONS-BUILDER > CALCITE-BLOCK
+---------------------------------... > DIV > ARTICLE
+------------------------------------------DIV > BUTTON
+------------------------------------------------HEADER > DIV > DIV > "Layout elements"
+------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------SECTION
+---------------------------------CALCITE-LIST
+------------------------------------... > DIV > DIV
+---------------------------------------------DIV
+------------------------------------------------DIV > "Total items: 16."
+------------------------------------------------OL
+---------------------------------------------TABLE
+------------------------------------------------THEAD > TR > TH > CALCITE-STACK
+------------------------------------------------------------... > DIV > DIV
+------------------------------------------------------------CALCITE-FILTER (aria-label: "Find action") > ... > DIV > DIV > LABEL > CALCITE-INPUT > ... > DIV > DIV > DIV
+------------------------------------------------------------------------------------------INPUT (aria-label: "Filter")
+------------------------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------TBODY
+------------------------------------CALCITE-LIST-ITEM-GROUP
+---------------------------------------... > DIV > TR > TD > "CONFIGURABLE"
+---------------------------------------FACE-SORTABLE-LIST
+------------------------------------------... > SECTION
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Edit Field"
+------------------------------------------------CALCITE-ICON (aria-label: "Edit Field") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Integration"
+------------------------------------------------CALCITE-ICON (aria-label: "Integration") > ... > svg > path
+------------------------------------CALCITE-LIST-ITEM-GROUP
+---------------------------------------... > DIV > TR > TD > "SYSTEM"
+---------------------------------------FACE-SORTABLE-LIST
+------------------------------------------... > SECTION
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Attach"
+------------------------------------------------CALCITE-ICON (aria-label: "Attach") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Choose File"
+------------------------------------------------CALCITE-ICON (aria-label: "Choose File") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Choose Photo or Video"
+------------------------------------------------CALCITE-ICON (aria-label: "Choose Photo or Video") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+```
+
+After the action, the DOM Tree Structure (with annotations for attribute changes) looks like this:
+```
+BODY
+---DIV
+---HEADER
+------A (aria-label: "Field Maps Designer home page") > svg > path
+------DIV
+------NAV (aria-label: "Breadcrumb") > OL
+------------LI > A > "Maps"
+------------LI
+---------------CALCITE-ICON > ... > svg > path
+---------------LI (aria-label: "Map title: “itaque torrens aetas admiratio”") > "itaque torrens aetas admiratio"
+------------LI
+---------------CALCITE-ICON > ... > svg > path
+---------------LI (aria-label: "Layer title: “Fort Elyssa”") > "Fort Elyssa"
+------DIV > UL
+------------LI > DIV > CALCITE-DROPDOWN
+---------------------... > DIV > DIV
+---------------------CALCITE-BUTTON
+------------------------... > DIV > BUTTON
+---------------------------------CALCITE-ICON > ... > svg > path
+---------------------------------SPAN
+------------------------"local"
+------------LI > A > "Resources"
+------------DIV
+------------LI > DIV > DIV > BUTTON
+------------------------DIV > DIV > "LS"
+------------------------SPAN > "Lillie"
+---MAIN > DIV > DIV
+------------CALCITE-ACTION-BAR
+---------------... > CALCITE-ACTION-GROUP
+---------------------... > DIV
+---------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Collapse")
+---------------------------------DIV > CALCITE-ICON > ... > svg > path
+---------------------------------DIV > "Collapse"
+---------------CALCITE-ACTION-GROUP
+------------------... > DIV
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Overview")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Overview"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Forms (Indicator present)")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Forms"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Geofences")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Geofences"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Offline")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Offline"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "App settings")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "App settings"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Sharing")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Sharing"
+---------------CALCITE-ACTION-MENU
+------------------...
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Open")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Open"
+---------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "What’s New (Indicator present)")
+---------------------------DIV > CALCITE-ICON > ... > svg > path
+---------------------------DIV > "What’s New"
+------------DIV
+---------------HEADER > SPAN > "Forms"
+---------------DIV
+------------------INPUT
+------------------BUTTON (aria-label: "Filter content") > CALCITE-ICON > ... > svg > path
+---------------DIV
+------------------CALCITE-BLOCK
+---------------------... > DIV > ARTICLE
+------------------------------DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Layers"
+------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------SECTION
+---------------------CALCITE-LIST
+------------------------... > DIV > DIV
+---------------------------------DIV
+------------------------------------DIV > "Total items: 4."
+------------------------------------OL
+---------------------------------TABLE > TBODY
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"New Lelah"
+---------------------------DIV > CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"South Franciscoburgh"
+---------------------------DIV > CALCITE-ICON > ... > svg
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"Vonland"
+---------------------------DIV > CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"Fort Elyssa"
+---------------------------DIV
+------------------------------CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------------CALCITE-ICON > ... > svg > path
+------------------CALCITE-BLOCK > ... > DIV > ARTICLE > DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Tables"
+------------------------------------CALCITE-ICON > ... > svg > path
+------------------CALCITE-BLOCK > ... > DIV > ARTICLE > DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Basemap"
+------------------------------------CALCITE-ICON > ... > svg > path
+---------------CALCITE-SPLIT-BUTTON > ... > DIV > DIV
+---------------------------CALCITE-BUTTON
+------------------------------... > DIV > BUTTON > SPAN
+------------------------------"Add layers"
+---------------------------DIV > DIV
+---------------------------CALCITE-DROPDOWN
+------------------------------... > DIV > DIV
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Add existing layers or create new layers") > CALCITE-ICON > ... > svg > path
+------------DIV > DIV
+------------------CALCITE-TABS
+---------------------... > SECTION
+---------------------DIV > DIV
+---------------------------CALCITE-TAB-NAV
+------------------------------... > DIV
+------------------------------------DIV
+------------------------------------DIV > DIV
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Form"
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Templates"
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Tasks"
+---------------------------DIV
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Undo: Add feature action") > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Save") > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-DROPDOWN
+---------------------------------... > DIV > DIV
+---------------------------------CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+---------------------CALCITE-TAB
+------------------------... > DIV > SECTION
+------------------------DIV > FA-LAYOUT-EDITOR > DIV
+---------------------------------FA-LAYOUTS-DROPDOWN > CALCITE-LABEL
+---------------------------------------... > DIV
+---------------------------------------DIV
+------------------------------------------SPAN > "Layouts"
+------------------------------------------CALCITE-ICON (aria-label: "information icon") > ... > svg > path
+---------------------------------------CALCITE-COMBOBOX > ... > DIV
+------------------------------------------------DIV
+---------------------------------------------------DIV
+------------------------------------------------------LABEL > "Layouts"
+------------------------------------------------------SPAN > SPAN > "New layout"
+---------------------------------------------------SPAN > CALCITE-ICON > ... > svg > path
+------------------------------------------------UL
+---------------------------------------------------LI > "All"
+---------------------------------------------------LI > "New layout"
+---------------------------------P > "New layout"
+---------------------------------FA-ACTION-CARD-LIST > FACE-SORTABLE-LIST["class:root-list sc-fa-layout-editor cursor-grab nested-list-odd empty-list hydrated->root-list sc-fa-layout-editor cursor-grab nested-list-odd hydrated"]
+---------------------------------------... > SECTION
+---------------------------------------FACE-SORTABLE-LIST-ITEM["class:->sc-fa-layout-editor hydrated sortable-selected","data-id:undefined->a965fa8f-76c1-4789-b752-b4b7e81fef1a","role:undefined->listitem","item-id:undefined->a965fa8f-76c1-4789-b752-b4b7e81fef1a","selectable:undefined->true","selected:undefined->''","should-highlight:->undefined"]
+------------------------------------------... > DIV
+------------------------------------------FA-ACTION-GROUP-CARD["class:undefined->sc-fa-action-group-card-h sc-fa-action-group-card-s hydrated","data-testid:undefined->action-group-card","style:undefined->--fa-action-group-card-drag-spacer-height: 270;"] > CALCITE-CARD["thumbnail-position:undefined->block-start","calcite-hydrated:undefined->''"]
+------------------------------------------------... > DIV > DIV > SECTION > DIV
+------------------------------------------------SPAN > FACE-CARD-ACTIONS["class:undefined->sc-fa-action-group-card hydrated","hidden:->undefined"]
+------------------------------------------------------... > CALCITE-ACTION-PAD > ... > DIV
+------------------------------------------------------FACE-CARD-ACTION["id:undefined->duplicate-a965fa8f-76c1-4789-b752-b4b7e81fef1a","uid:undefined->duplicate-a965fa8f-76c1-4789-b752-b4b7e81fef1a","class:undefined->hydrated"] > ... > CALCITE-ACTION > ... > DIV
+---------------------------------------------------------------------BUTTON (aria-label: "Duplicate") > DIV > CALCITE-ICON > ... > svg > path
+---------------------------------------------------------------------DIV
+------------------------------------------------------FACE-CARD-ACTION["id:undefined->delete-a965fa8f-76c1-4789-b752-b4b7e81fef1a","uid:undefined->delete-a965fa8f-76c1-4789-b752-b4b7e81fef1a","class:undefined->hydrated"] > ... > CALCITE-ACTION > ... > DIV
+---------------------------------------------------------------------BUTTON (aria-label: "Delete") > DIV > CALCITE-ICON > ... > svg > path
+---------------------------------------------------------------------DIV
+------------------------------------------------------FACE-CARD-ACTION["id:undefined->collapse-a965fa8f-76c1-4789-b752-b4b7e81fef1a","uid:undefined->collapse-a965fa8f-76c1-4789-b752-b4b7e81fef1a","class:undefined->hydrated","aria-controls:->face-collapsible-a965fa8f-76c1-4789-b752-b4b7e81fef1a"] > ... > CALCITE-ACTION > ... > DIV
+---------------------------------------------------------------------BUTTON (aria-label: "Collapse") > DIV > CALCITE-ICON > ... > svg > path
+---------------------------------------------------------------------DIV
+------------------------------------------------ARTICLE
+---------------------------------------------------HEADER
+------------------------------------------------------CALCITE-ICON["aria-hidden:undefined->true","icon:undefined->attachment","scale:undefined->s","calcite-hydrated:undefined->''"] > ... > svg > path
+------------------------------------------------------SPAN > "Attach"
+------------------------------------------------------CALCITE-CHIP["appearance:undefined->solid","kind:undefined->neutral","scale:undefined->s","calcite-hydrated:undefined->''"]
+---------------------------------------------------------... > DIV > DIV > SPAN
+---------------------------------------------------------"5"
+---------------------------------------------------FACE-COLLAPSIBLE["id:undefined->face-collapsible-a965fa8f-76c1-4789-b752-b4b7e81fef1a","uid:undefined->face-collapsible-a965fa8f-76c1-4789-b752-b4b7e81fef1a","class:sc-fa-action-group-card->sc-fa-action-group-card hydrated"]
+------------------------------------------------------... > DIV
+------------------------------------------------------FA-ACTION-CARD-LIST["class:sc-fa-action-group-card->sc-fa-action-group-card hydrated"] > FACE-SORTABLE-LIST["class:nested-odd->nested-odd sc-fa-action-group-card cursor-grab nested-list nested-list-even hydrated","role:undefined->list","data-parent-id:undefined->a965fa8f-76c1-4789-b752-b4b7e81fef1a"]
+------------------------------------------------------------... > SECTION
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM["class:action-card-list-handle->action-card-list-handle hydrated","data-id:undefined->86d44832-d2cc-48f5-bf38-5322570843d7","role:undefined->listitem","item-id:undefined->86d44832-d2cc-48f5-bf38-5322570843d7","selectable:undefined->true"]
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD["class:undefined->sc-fa-action-card-h sc-fa-action-card-s hydrated","data-testid:undefined->action-card"] > CALCITE-CARD["thumbnail-position:undefined->block-start","calcite-hydrated:undefined->''"]
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------SPAN > FACE-CARD-ACTIONS["class:undefined->sc-fa-action-card hydrated","hidden:->undefined"]
+---------------------------------------------------------------------------... > CALCITE-ACTION-PAD > ... > DIV
+---------------------------------------------------------------------------FACE-CARD-ACTION["id:undefined->duplicate-86d44832-d2cc-48f5-bf38-5322570843d7","uid:undefined->duplicate-86d44832-d2cc-48f5-bf38-5322570843d7","class:undefined->hydrated"] > ... > CALCITE-ACTION > ... > DIV
+------------------------------------------------------------------------------------------BUTTON (aria-label: "Duplicate") > DIV > CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------------------------DIV
+---------------------------------------------------------------------------FACE-CARD-ACTION["id:undefined->delete-86d44832-d2cc-48f5-bf38-5322570843d7","uid:undefined->delete-86d44832-d2cc-48f5-bf38-5322570843d7","class:undefined->hydrated"] > ... > CALCITE-ACTION > ... > DIV
+------------------------------------------------------------------------------------------BUTTON (aria-label: "Delete") > DIV > CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------------------------DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON["aria-hidden:undefined->true","icon:undefined->file","scale:undefined->s","calcite-hydrated:undefined->''"] > ... > svg > path
+------------------------------------------------------------------------SPAN > "Choose File"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM["class:action-card-list-handle->action-card-list-handle hydrated","data-id:undefined->271e06f9-e316-4524-9504-a1107c9b89af","role:undefined->listitem","item-id:undefined->271e06f9-e316-4524-9504-a1107c9b89af","selectable:undefined->true"]
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD["class:undefined->sc-fa-action-card-h sc-fa-action-card-s hydrated","data-testid:undefined->action-card"] > CALCITE-CARD["thumbnail-position:undefined->block-start","calcite-hydrated:undefined->''"]
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON["aria-hidden:undefined->true","icon:undefined->image","scale:undefined->s","calcite-hydrated:undefined->''"] > ... > svg > path
+------------------------------------------------------------------------SPAN > "Choose Photo or Video"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM["class:action-card-list-handle->action-card-list-handle hydrated","data-id:undefined->3573be3c-98e6-4eb8-acea-222f45d80302","role:undefined->listitem","item-id:undefined->3573be3c-98e6-4eb8-acea-222f45d80302","selectable:undefined->true"]
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD["class:undefined->sc-fa-action-card-h sc-fa-action-card-s hydrated","data-testid:undefined->action-card"] > CALCITE-CARD["thumbnail-position:undefined->block-start","calcite-hydrated:undefined->''"]
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON["aria-hidden:undefined->true","icon:undefined->microphone","scale:undefined->s","calcite-hydrated:undefined->''"] > ... > svg > path
+------------------------------------------------------------------------SPAN > "Record Audio"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM["class:action-card-list-handle->action-card-list-handle hydrated","data-id:undefined->4471b4be-be7d-4d70-b8ce-d22e810095ad","role:undefined->listitem","item-id:undefined->4471b4be-be7d-4d70-b8ce-d22e810095ad","selectable:undefined->true"]
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD["class:undefined->sc-fa-action-card-h sc-fa-action-card-s hydrated","data-testid:undefined->action-card"] > CALCITE-CARD["thumbnail-position:undefined->block-start","calcite-hydrated:undefined->''"]
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON["aria-hidden:undefined->true","icon:undefined->camera","scale:undefined->s","calcite-hydrated:undefined->''"] > ... > svg > path
+------------------------------------------------------------------------SPAN > "Take Photo"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM["class:action-card-list-handle->action-card-list-handle hydrated","data-id:undefined->7262674f-4286-45f7-8aa7-9aa4013e9f52","role:undefined->listitem","item-id:undefined->7262674f-4286-45f7-8aa7-9aa4013e9f52","selectable:undefined->true"]
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD["class:undefined->sc-fa-action-card-h sc-fa-action-card-s hydrated","data-testid:undefined->action-card"] > CALCITE-CARD["thumbnail-position:undefined->block-start","calcite-hydrated:undefined->''"]
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON["aria-hidden:undefined->true","icon:undefined->video","scale:undefined->s","calcite-hydrated:undefined->''"] > ... > svg > path
+------------------------------------------------------------------------SPAN > "Take Video"
+------------------DIV > FACE-SIDE-PANEL-STACK["is-overlay-open:undefined->''"]
+------------------------... > DIV
+------------------------------CALCITE-PANEL > ... > DIV > ARTICLE
+------------------------------------------HEADER > DIV > DIV > DIV > "Layout builder"
+------------------------------------------DIV
+------------------------------CALCITE-PANEL > ... > DIV > ARTICLE
+------------------------------------------HEADER > DIV
+------------------------------------------------DIV > DIV > "Properties"
+------------------------------------------------DIV > CALCITE-ACTION (aria-label: "Close") > ... > DIV
+------------------------------------------------------------BUTTON (aria-label: "Close") > DIV > CALCITE-ICON > ... > svg > path
+------------------------------------------------------------DIV
+------------------------------------------DIV
+------------------------DIV
+---------------------------FA-LAYOUT-PROPERTIES > CALCITE-BLOCK
+---------------------------------... > DIV > ARTICLE
+------------------------------------------DIV > BUTTON
+------------------------------------------------HEADER > DIV > DIV > "Layout properties"
+------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------SECTION
+---------------------------------FACE-VALIDATED-FORM > FORM > FACE-VALIDATED-LABEL
+------------------------------------------... > CALCITE-LABEL
+------------------------------------------------... > DIV
+------------------------------------------------DIV > SPAN > "Layout title"
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Layout title") > ... > DIV > CALCITE-INPUT-TEXT > ... > DIV > DIV > DIV > INPUT
+---------------------------------DIV > DIV["class:cursor-pointer flex mb-2 sc-fa-layout-properties->cursor-pointer flex mb-2"]
+---------------------------------------CALCITE-LABEL
+------------------------------------------... > DIV
+------------------------------------------CALCITE-CHECKBOX > ... > DIV > DIV (aria-label: "Visible") > svg > path
+------------------------------------------DIV > P > "Visible"
+---------------------------------------DIV > CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+---------------------------FA-ACTIONS-BUILDER > CALCITE-BLOCK
+---------------------------------... > DIV > ARTICLE
+------------------------------------------DIV > BUTTON
+------------------------------------------------HEADER > DIV > DIV > "Layout elements"
+------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------SECTION
+---------------------------------CALCITE-LIST
+------------------------------------... > DIV > DIV
+---------------------------------------------DIV
+------------------------------------------------DIV > "Total items: 16."
+------------------------------------------------OL
+---------------------------------------------TABLE
+------------------------------------------------THEAD > TR > TH > CALCITE-STACK
+------------------------------------------------------------... > DIV > DIV
+------------------------------------------------------------CALCITE-FILTER (aria-label: "Find action") > ... > DIV > DIV > LABEL > CALCITE-INPUT > ... > DIV > DIV > DIV
+------------------------------------------------------------------------------------------INPUT (aria-label: "Filter")
+------------------------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------TBODY
+------------------------------------CALCITE-LIST-ITEM-GROUP
+---------------------------------------... > DIV > TR > TD > "CONFIGURABLE"
+---------------------------------------FACE-SORTABLE-LIST
+------------------------------------------... > SECTION
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Edit Field"
+------------------------------------------------CALCITE-ICON (aria-label: "Edit Field") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Integration"
+------------------------------------------------CALCITE-ICON (aria-label: "Integration") > ... > svg > path
+------------------------------------CALCITE-LIST-ITEM-GROUP
+---------------------------------------... > DIV > TR > TD > "SYSTEM"
+---------------------------------------FACE-SORTABLE-LIST["style:undefined->cursor: grab;"]
+------------------------------------------... > SECTION
+------------------------------------------CALCITE-LIST-ITEM["style:display: none;->''"]
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Attach"
+------------------------------------------------CALCITE-ICON (aria-label: "Attach") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Choose File"
+------------------------------------------------CALCITE-ICON (aria-label: "Choose File") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Choose Photo or Video"
+------------------------------------------------CALCITE-ICON (aria-label: "Choose Photo or Video") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Collect Here"
+------------------------------------------------CALCITE-ICON (aria-label: "Collect Here") > ... > svg
+------------------------DIV
+---------------------------CALCITE-BLOCK["overlay-positioning:undefined->absolute","calcite-hydrated:undefined->''"]
+------------------------------... > DIV > ARTICLE
+---------------------------------------DIV > BUTTON
+---------------------------------------------HEADER > DIV > DIV > "Action properties"
+---------------------------------------------CALCITE-ICON > ... > svg > path
+---------------------------------------SECTION
+------------------------------FA-FORMATTING-EDITOR["class:undefined->sc-fa-formatting-editor-h sc-fa-formatting-editor-s hydrated","data-testid:undefined->formatting-editor"] > FACE-VALIDATED-FORM["scale:undefined->m","class:sc-fa-formatting-editor->sc-fa-formatting-editor hydrated"] > FORM["class:flex flex-col [&_fieldset]:flex [&_fieldset]:flex-col gap-3 [&_fieldset]:gap-3 [&_legend]:mb-3->flex flex-col [&_fieldset]:flex [&_fieldset]:flex-col gap-3 [&_fieldset]:gap-3 [&_legend]:mb-3 sc-fa-formatting-editor"]
+---------------------------------------FACE-VALIDATED-LABEL["scale:undefined->s","class:sc-fa-formatting-editor->sc-fa-formatting-editor hydrated"]
+------------------------------------------... > CALCITE-LABEL
+------------------------------------------------... > DIV
+------------------------------------------------DIV > SPAN > "Display name*"
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Display name*")["blank:undefined->default","name:undefined->featureAction.title","class:sc-fa-formatting-editor->sc-fa-formatting-editor hydrated","aria-label:undefined->Display name*"] > ... > DIV > CALCITE-INPUT-TEXT > ... > DIV > DIV > DIV > INPUT
+---------------------------------------FACE-VALIDATED-LABEL["scale:undefined->s","class:sc-fa-formatting-editor->sc-fa-formatting-editor hydrated"]
+------------------------------------------... > CALCITE-LABEL
+------------------------------------------------... > DIV
+------------------------------------------------DIV > SPAN > "Icon*"
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Icon*")["blank:undefined->default","name:undefined->featureAction.icon","class:sc-fa-formatting-editor->sc-fa-formatting-editor hydrated","aria-label:undefined->Icon*"] > ... > DIV > CALCITE-COMBOBOX > ... > DIV
+------------------------------------------------------------DIV
+---------------------------------------------------------------SPAN > CALCITE-ICON > ... > svg > path
+---------------------------------------------------------------DIV
+------------------------------------------------------------------LABEL > "Icon*"
+------------------------------------------------------------------SPAN > SPAN > "Attachment"
+---------------------------------------------------------------SPAN > CALCITE-ICON > ... > svg > path
+------------------------------------------------------------UL
+---------------------------------------------------------------LI > "Attachment"
+---------------------------------------------------------------LI > "Folder"
+---------------------------------------DIV
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Primary action")["blank:undefined->default","name:undefined->featureActionReference.predominant","class:sc-fa-formatting-editor->sc-fa-formatting-editor hydrated","aria-label:undefined->Primary action"] > ... > DIV > CALCITE-CHECKBOX > ... > DIV > DIV > svg
+------------------------------------------FACE-VALIDATED-LABEL["scale:undefined->s","class:flex-1 sc-fa-formatting-editor->flex-1 sc-fa-formatting-editor hydrated"] > ... > CALCITE-LABEL
+---------------------------------------------------... > DIV
+---------------------------------------------------DIV > SPAN > "Primary action"
+------------------------------------------CALCITE-ICON (aria-label: "information icon")["aria-hidden:undefined->false","aria-label:undefined->information icon","role:undefined->img","icon:undefined->information","scale:undefined->s","calcite-hydrated:undefined->''","aria-describedby:undefined->calcite-tooltip-bf603655-794e-dd7c-7a95-3c645ccfb221"] > ... > svg > path
+---------------------------CALCITE-BLOCK["overlay-positioning:undefined->absolute","calcite-hydrated:undefined->''"]
+------------------------------... > DIV > ARTICLE
+---------------------------------------DIV > BUTTON
+---------------------------------------------HEADER > DIV
+---------------------------------------------------DIV > "Logic"
+---------------------------------------------------DIV > "Set dynamic visibility with Arcade expressions"
+---------------------------------------------CALCITE-ICON > ... > svg > path
+---------------------------------------SECTION
+------------------------------DIV
+---------------------------------CALCITE-LABEL["alignment:undefined->start","calcite-hydrated:undefined->''"]
+------------------------------------... > DIV
+------------------------------------CALCITE-CHECKBOX["checked:undefined->''","guid:undefined->calcite-checkbox-7e68da2c-a8d8-065b-52ae-4e4e3fbeaa71","status:undefined->idle","calcite-hydrated:undefined->''"] > ... > DIV > DIV (aria-label: "Visible") > svg > path
+------------------------------------DIV > P > "Visible"
+---------------------------------DIV > CALCITE-BUTTON["alignment:undefined->center","type:undefined->button","width:undefined->auto","calcite-hydrated:undefined->''"] > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+```
+
+Follow the following steps:
+
+Step 1: Use the following criteria along with any other information to determine if the step 'drag the 'Attach' layout element to the fa-action-card-list element in the canvas' was performed.
+    - an 'Attach' card should be visible in the canvas and its properties panel shows up over the layout builder panel 
+
+Note: all criteria must be met for the step to be performed.
+Prove if the step was performed. Answer Yes/No and Briefly explain what evidence supports your claim.
+
+Step 2: Score the agent's action between -1 and 1 in regards to the desired action. 
+Reward the agent for correct responses and punish it for incorrect ones so it eventually learns how to accomplish the task.
+
+Format your output like so:
+```
+{
+    "Answer": <'Yes' if step was performed, 'No' otherwise>
+    "Explanation": <brief evidence to support answer>
+    "Score": <score between 0-1>
+}
+```
+
+Output:
+---
+Response:```json
+{
+    "Answer": "Yes",
+    "Explanation": "The 'Attach' card is visible in the canvas, and its properties panel is displayed over the layout builder panel, indicating that the drag action was successfully performed.",
+    "Score": 1
+}
+```
+---
+Prompt:
+I need to do the following: click the close button next to the properties heading
+
+The webapp has the following DOM Tree Structure (simplified + only human visible elements):
+```
+BODY
+---DIV
+---HEADER
+------A (aria-label: "Field Maps Designer home page") > svg > path
+------DIV
+------NAV (aria-label: "Breadcrumb") > OL
+------------LI > A > "Maps"
+------------LI
+---------------CALCITE-ICON > ... > svg > path
+---------------LI (aria-label: "Map title: “itaque torrens aetas admiratio”") > "itaque torrens aetas admiratio"
+------------LI
+---------------CALCITE-ICON > ... > svg > path
+---------------LI (aria-label: "Layer title: “Fort Elyssa”") > "Fort Elyssa"
+------DIV > UL
+------------LI > DIV > CALCITE-DROPDOWN
+---------------------... > DIV > DIV
+---------------------CALCITE-BUTTON
+------------------------... > DIV > BUTTON
+---------------------------------CALCITE-ICON > ... > svg > path
+---------------------------------SPAN
+------------------------"local"
+------------LI > A > "Resources"
+------------DIV
+------------LI > DIV > DIV > BUTTON
+------------------------DIV > DIV > "LS"
+------------------------SPAN > "Lillie"
+---MAIN > DIV > DIV
+------------CALCITE-ACTION-BAR
+---------------... > CALCITE-ACTION-GROUP
+---------------------... > DIV
+---------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Collapse")
+---------------------------------DIV > CALCITE-ICON > ... > svg > path
+---------------------------------DIV > "Collapse"
+---------------CALCITE-ACTION-GROUP
+------------------... > DIV
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Overview")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Overview"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Forms (Indicator present)")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Forms"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Geofences")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Geofences"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Offline")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Offline"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "App settings")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "App settings"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Sharing")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Sharing"
+---------------CALCITE-ACTION-MENU
+------------------...
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Open")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Open"
+---------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "What’s New (Indicator present)")
+---------------------------DIV > CALCITE-ICON > ... > svg > path
+---------------------------DIV > "What’s New"
+------------DIV
+---------------HEADER > SPAN > "Forms"
+---------------DIV
+------------------INPUT
+------------------BUTTON (aria-label: "Filter content") > CALCITE-ICON > ... > svg > path
+---------------DIV
+------------------CALCITE-BLOCK
+---------------------... > DIV > ARTICLE
+------------------------------DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Layers"
+------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------SECTION
+---------------------CALCITE-LIST
+------------------------... > DIV > DIV
+---------------------------------DIV
+------------------------------------DIV > "Total items: 4."
+------------------------------------OL
+---------------------------------TABLE > TBODY
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"New Lelah"
+---------------------------DIV > CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"South Franciscoburgh"
+---------------------------DIV > CALCITE-ICON > ... > svg
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"Vonland"
+---------------------------DIV > CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"Fort Elyssa"
+---------------------------DIV
+------------------------------CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------------CALCITE-ICON > ... > svg > path
+------------------CALCITE-BLOCK > ... > DIV > ARTICLE > DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Tables"
+------------------------------------CALCITE-ICON > ... > svg > path
+------------------CALCITE-BLOCK > ... > DIV > ARTICLE > DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Basemap"
+------------------------------------CALCITE-ICON > ... > svg > path
+---------------CALCITE-SPLIT-BUTTON > ... > DIV > DIV
+---------------------------CALCITE-BUTTON
+------------------------------... > DIV > BUTTON > SPAN
+------------------------------"Add layers"
+---------------------------DIV > DIV
+---------------------------CALCITE-DROPDOWN
+------------------------------... > DIV > DIV
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Add existing layers or create new layers") > CALCITE-ICON > ... > svg > path
+------------DIV > DIV
+------------------CALCITE-TABS
+---------------------... > SECTION
+---------------------DIV > DIV
+---------------------------CALCITE-TAB-NAV
+------------------------------... > DIV
+------------------------------------DIV
+------------------------------------DIV > DIV
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Form"
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Templates"
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Tasks"
+---------------------------DIV
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Undo: Add feature action") > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Save") > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-DROPDOWN
+---------------------------------... > DIV > DIV
+---------------------------------CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+---------------------CALCITE-TAB
+------------------------... > DIV > SECTION
+------------------------DIV > FA-LAYOUT-EDITOR > DIV
+---------------------------------FA-LAYOUTS-DROPDOWN > CALCITE-LABEL
+---------------------------------------... > DIV
+---------------------------------------DIV
+------------------------------------------SPAN > "Layouts"
+------------------------------------------CALCITE-ICON (aria-label: "information icon") > ... > svg > path
+---------------------------------------CALCITE-COMBOBOX > ... > DIV
+------------------------------------------------DIV
+---------------------------------------------------DIV
+------------------------------------------------------LABEL > "Layouts"
+------------------------------------------------------SPAN > SPAN > "New layout"
+---------------------------------------------------SPAN > CALCITE-ICON > ... > svg > path
+------------------------------------------------UL
+---------------------------------------------------LI > "All"
+---------------------------------------------------LI > "New layout"
+---------------------------------P > "New layout"
+---------------------------------FA-ACTION-CARD-LIST > FACE-SORTABLE-LIST
+---------------------------------------... > SECTION
+---------------------------------------FACE-SORTABLE-LIST-ITEM
+------------------------------------------... > DIV
+------------------------------------------FA-ACTION-GROUP-CARD > CALCITE-CARD
+------------------------------------------------... > DIV > DIV > SECTION > DIV
+------------------------------------------------SPAN > FACE-CARD-ACTIONS
+------------------------------------------------------... > CALCITE-ACTION-PAD > ... > DIV
+------------------------------------------------------FACE-CARD-ACTION > ... > CALCITE-ACTION > ... > DIV
+---------------------------------------------------------------------BUTTON (aria-label: "Duplicate") > DIV > CALCITE-ICON > ... > svg > path
+---------------------------------------------------------------------DIV
+------------------------------------------------------FACE-CARD-ACTION > ... > CALCITE-ACTION > ... > DIV
+---------------------------------------------------------------------BUTTON (aria-label: "Delete") > DIV > CALCITE-ICON > ... > svg > path
+---------------------------------------------------------------------DIV
+------------------------------------------------------FACE-CARD-ACTION > ... > CALCITE-ACTION > ... > DIV
+---------------------------------------------------------------------BUTTON (aria-label: "Collapse") > DIV > CALCITE-ICON > ... > svg > path
+---------------------------------------------------------------------DIV
+------------------------------------------------ARTICLE
+---------------------------------------------------HEADER
+------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------SPAN > "Attach"
+------------------------------------------------------CALCITE-CHIP
+---------------------------------------------------------... > DIV > DIV > SPAN
+---------------------------------------------------------"5"
+---------------------------------------------------FACE-COLLAPSIBLE
+------------------------------------------------------... > DIV
+------------------------------------------------------FA-ACTION-CARD-LIST > FACE-SORTABLE-LIST
+------------------------------------------------------------... > SECTION
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------SPAN > FACE-CARD-ACTIONS
+---------------------------------------------------------------------------... > CALCITE-ACTION-PAD > ... > DIV
+---------------------------------------------------------------------------FACE-CARD-ACTION > ... > CALCITE-ACTION > ... > DIV
+------------------------------------------------------------------------------------------BUTTON (aria-label: "Duplicate") > DIV > CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------------------------DIV
+---------------------------------------------------------------------------FACE-CARD-ACTION > ... > CALCITE-ACTION > ... > DIV
+------------------------------------------------------------------------------------------BUTTON (aria-label: "Delete") > DIV > CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------------------------DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Choose File"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Choose Photo or Video"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Record Audio"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Take Photo"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Take Video"
+------------------DIV > FACE-SIDE-PANEL-STACK
+------------------------... > DIV
+------------------------------CALCITE-PANEL > ... > DIV > ARTICLE
+------------------------------------------HEADER > DIV > DIV > DIV > "Layout builder"
+------------------------------------------DIV
+------------------------------CALCITE-PANEL > ... > DIV > ARTICLE
+------------------------------------------HEADER > DIV
+------------------------------------------------DIV > DIV > "Properties"
+------------------------------------------------DIV > CALCITE-ACTION (aria-label: "Close") > ... > DIV
+------------------------------------------------------------BUTTON (aria-label: "Close") > DIV > CALCITE-ICON > ... > svg > path
+------------------------------------------------------------DIV
+------------------------------------------DIV
+------------------------DIV
+---------------------------FA-LAYOUT-PROPERTIES > CALCITE-BLOCK
+---------------------------------... > DIV > ARTICLE
+------------------------------------------DIV > BUTTON
+------------------------------------------------HEADER > DIV > DIV > "Layout properties"
+------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------SECTION
+---------------------------------FACE-VALIDATED-FORM > FORM > FACE-VALIDATED-LABEL
+------------------------------------------... > CALCITE-LABEL
+------------------------------------------------... > DIV
+------------------------------------------------DIV > SPAN > "Layout title"
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Layout title") > ... > DIV > CALCITE-INPUT-TEXT > ... > DIV > DIV > DIV > INPUT
+---------------------------------DIV > DIV
+---------------------------------------CALCITE-LABEL
+------------------------------------------... > DIV
+------------------------------------------CALCITE-CHECKBOX > ... > DIV > DIV (aria-label: "Visible") > svg > path
+------------------------------------------DIV > P > "Visible"
+---------------------------------------DIV > CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+---------------------------FA-ACTIONS-BUILDER > CALCITE-BLOCK
+---------------------------------... > DIV > ARTICLE
+------------------------------------------DIV > BUTTON
+------------------------------------------------HEADER > DIV > DIV > "Layout elements"
+------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------SECTION
+---------------------------------CALCITE-LIST
+------------------------------------... > DIV > DIV
+---------------------------------------------DIV
+------------------------------------------------DIV > "Total items: 16."
+------------------------------------------------OL
+---------------------------------------------TABLE
+------------------------------------------------THEAD > TR > TH > CALCITE-STACK
+------------------------------------------------------------... > DIV > DIV
+------------------------------------------------------------CALCITE-FILTER (aria-label: "Find action") > ... > DIV > DIV > LABEL > CALCITE-INPUT > ... > DIV > DIV > DIV
+------------------------------------------------------------------------------------------INPUT (aria-label: "Filter")
+------------------------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------TBODY
+------------------------------------CALCITE-LIST-ITEM-GROUP
+---------------------------------------... > DIV > TR > TD > "CONFIGURABLE"
+---------------------------------------FACE-SORTABLE-LIST
+------------------------------------------... > SECTION
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Edit Field"
+------------------------------------------------CALCITE-ICON (aria-label: "Edit Field") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Integration"
+------------------------------------------------CALCITE-ICON (aria-label: "Integration") > ... > svg > path
+------------------------------------CALCITE-LIST-ITEM-GROUP
+---------------------------------------... > DIV > TR > TD > "SYSTEM"
+---------------------------------------FACE-SORTABLE-LIST
+------------------------------------------... > SECTION
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Attach"
+------------------------------------------------CALCITE-ICON (aria-label: "Attach") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Choose File"
+------------------------------------------------CALCITE-ICON (aria-label: "Choose File") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Choose Photo or Video"
+------------------------------------------------CALCITE-ICON (aria-label: "Choose Photo or Video") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Collect Here"
+------------------------------------------------CALCITE-ICON (aria-label: "Collect Here") > ... > svg
+------------------------DIV
+---------------------------CALCITE-BLOCK
+------------------------------... > DIV > ARTICLE
+---------------------------------------DIV > BUTTON
+---------------------------------------------HEADER > DIV > DIV > "Action properties"
+---------------------------------------------CALCITE-ICON > ... > svg > path
+---------------------------------------SECTION
+------------------------------FA-FORMATTING-EDITOR > FACE-VALIDATED-FORM > FORM
+---------------------------------------FACE-VALIDATED-LABEL
+------------------------------------------... > CALCITE-LABEL
+------------------------------------------------... > DIV
+------------------------------------------------DIV > SPAN > "Display name*"
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Display name*") > ... > DIV > CALCITE-INPUT-TEXT > ... > DIV > DIV > DIV > INPUT
+---------------------------------------FACE-VALIDATED-LABEL
+------------------------------------------... > CALCITE-LABEL
+------------------------------------------------... > DIV
+------------------------------------------------DIV > SPAN > "Icon*"
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Icon*") > ... > DIV > CALCITE-COMBOBOX > ... > DIV
+------------------------------------------------------------DIV
+---------------------------------------------------------------SPAN > CALCITE-ICON > ... > svg > path
+---------------------------------------------------------------DIV
+------------------------------------------------------------------LABEL > "Icon*"
+------------------------------------------------------------------SPAN > SPAN > "Attachment"
+---------------------------------------------------------------SPAN > CALCITE-ICON > ... > svg > path
+------------------------------------------------------------UL
+---------------------------------------------------------------LI > "Attachment"
+---------------------------------------------------------------LI > "Folder"
+---------------------------------------DIV
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Primary action") > ... > DIV > CALCITE-CHECKBOX > ... > DIV > DIV > svg
+------------------------------------------FACE-VALIDATED-LABEL > ... > CALCITE-LABEL
+---------------------------------------------------... > DIV
+---------------------------------------------------DIV > SPAN > "Primary action"
+------------------------------------------CALCITE-ICON (aria-label: "information icon") > ... > svg > path
+---------------------------CALCITE-BLOCK
+------------------------------... > DIV > ARTICLE
+---------------------------------------DIV > BUTTON
+---------------------------------------------HEADER > DIV
+---------------------------------------------------DIV > "Logic"
+---------------------------------------------------DIV > "Set dynamic visibility with Arcade expressions"
+---------------------------------------------CALCITE-ICON > ... > svg > path
+---------------------------------------SECTION
+------------------------------DIV
+---------------------------------CALCITE-LABEL
+------------------------------------... > DIV
+------------------------------------CALCITE-CHECKBOX > ... > DIV > DIV (aria-label: "Visible") > svg > path
+------------------------------------DIV > P > "Visible"
+---------------------------------DIV > CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+```
+
+In this DOM Tree Structure, '...' refers to a Shadow Root.
+
+Your task is to:
+```
+Output a string representing an action that may accomplish the above task.
+
+Each interaction should be provided in JSON format with the following structure:
+{
+  "action": "click|enter|type|tab|dragAndDrop|expect",
+  "locatorCode": "code (to get the relevant element in Playwright)",
+  "value": "value (only for type action)",
+  "toLocatorCode": "code of locator for element to which first locator is being dragged to (only for dragAndDrop action)"
+}
+```
+
+Follow the following steps as a guide:
+
+Step 1: What part(s) of the DOM Tree above is relevant to the step "click the close button next to the properties heading"?
+ - consider a user might say something that isn't technically correct. For example when they say to click a certain button the element being referred to may not necessarily have 'button' tag, or may have spelling mistakes.
+ - You must infer what elements are relevant based on the semantics of the step and context provided by the DOM.
+
+Step 2: What type of interaction do you want to perform on the above element? (e.g. click, type, etc.)
+
+Step 3: Based on your answer to Step 1, identify the code that in Playwright that should be passed into "locatorCode" that can be used to find the relevant element via a locator.
+
+Note you can chain locators like page.getByRole('...').locator('...').getByText('...').
+Howevr, try to minimize the number of chained locators while maintaining specificity.
+
+The locators you can may are listed in the examples below.
+
+Also consider these notes:
+ - getByRole locates elements by its implicit role; however doesn't work for custom elements. ex: works for button, but not for CALCIT-LIST-ITEM
+ - getByText can easily match multiple elements so use exact matching and possibly apply another locator before chaining this 
+ - Use getByLabel to find alements by associated <label> or aria-label attribute
+ - You can narrow down the query to the nth match using the nth= locator with a 0 based index; e.g. .locator('nth=4')
+ - Minimize usage of XPath / CSS selectors as they cannot go through a Shadow DOM and are more brittle than other selectors; if needed use chaining instead
+ 
+We will evaluate the code passed into "locatorCode" to get the first matching element in Playwright. 
+You are looking at test data so try not to refer to the test data text in your selectors.
+
+Step 4: Verify your code is well-formed Playwright code as described above. If there are errors, do your best to fix them. Try to use a different locator.
+
+Step 5: Output the interaction in the JSON format described earlier.
+Your output should be in JSON format. No trailing commas.
+
+Examples:
+```
+// getByRole
+{"action": "click", "locatorCode:”page.getByRole('button', { name: submit }”)}
+// getByLabel
+{"action": “enter”, "locatorCode:”page.getByLabel('Password’)”}
+// getByText
+{"action": “tab”, "locatorCode:”page.getByText('Welcome, John'), { exact: true }”}
+// getByTestID
+{"action": “type”, "locatorCode:”page.getByTestId('directions’)”, “value”:”180 New York Streets”}
+// XPath:
+{"action": "click", "locatorCode": "page.locator('[data-test-interactions]');"}
+// CSS:
+{"action": "click", "locatorCode": "CALCITE-LIST-ITEM:nth-child(4)"}
+```
+
+Recall, I need to: click the close button next to the properties heading 
+
+Output:
+---
+Response:```json
+{"action": "click", "locatorCode": "page.getByLabel('Close')"}
+```
+---
+Prompt:
+An agent is exploring a web page, and is supposed to perform the following: click the close button next to the properties heading
+
+The agent performed some action on the page.
+
+The webapp has the following DOM Tree Structure (simplified + only human visible elements) before the action:
+```
+BODY
+---DIV
+---HEADER
+------A (aria-label: "Field Maps Designer home page") > svg > path
+------DIV
+------NAV (aria-label: "Breadcrumb") > OL
+------------LI > A > "Maps"
+------------LI
+---------------CALCITE-ICON > ... > svg > path
+---------------LI (aria-label: "Map title: “itaque torrens aetas admiratio”") > "itaque torrens aetas admiratio"
+------------LI
+---------------CALCITE-ICON > ... > svg > path
+---------------LI (aria-label: "Layer title: “Fort Elyssa”") > "Fort Elyssa"
+------DIV > UL
+------------LI > DIV > CALCITE-DROPDOWN
+---------------------... > DIV > DIV
+---------------------CALCITE-BUTTON
+------------------------... > DIV > BUTTON
+---------------------------------CALCITE-ICON > ... > svg > path
+---------------------------------SPAN
+------------------------"local"
+------------LI > A > "Resources"
+------------DIV
+------------LI > DIV > DIV > BUTTON
+------------------------DIV > DIV > "LS"
+------------------------SPAN > "Lillie"
+---MAIN > DIV > DIV
+------------CALCITE-ACTION-BAR
+---------------... > CALCITE-ACTION-GROUP
+---------------------... > DIV
+---------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Collapse")
+---------------------------------DIV > CALCITE-ICON > ... > svg > path
+---------------------------------DIV > "Collapse"
+---------------CALCITE-ACTION-GROUP
+------------------... > DIV
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Overview")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Overview"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Forms (Indicator present)")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Forms"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Geofences")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Geofences"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Offline")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Offline"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "App settings")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "App settings"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Sharing")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Sharing"
+---------------CALCITE-ACTION-MENU
+------------------...
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Open")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Open"
+---------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "What’s New (Indicator present)")
+---------------------------DIV > CALCITE-ICON > ... > svg > path
+---------------------------DIV > "What’s New"
+------------DIV
+---------------HEADER > SPAN > "Forms"
+---------------DIV
+------------------INPUT
+------------------BUTTON (aria-label: "Filter content") > CALCITE-ICON > ... > svg > path
+---------------DIV
+------------------CALCITE-BLOCK
+---------------------... > DIV > ARTICLE
+------------------------------DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Layers"
+------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------SECTION
+---------------------CALCITE-LIST
+------------------------... > DIV > DIV
+---------------------------------DIV
+------------------------------------DIV > "Total items: 4."
+------------------------------------OL
+---------------------------------TABLE > TBODY
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"New Lelah"
+---------------------------DIV > CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"South Franciscoburgh"
+---------------------------DIV > CALCITE-ICON > ... > svg
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"Vonland"
+---------------------------DIV > CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"Fort Elyssa"
+---------------------------DIV
+------------------------------CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------------CALCITE-ICON > ... > svg > path
+------------------CALCITE-BLOCK > ... > DIV > ARTICLE > DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Tables"
+------------------------------------CALCITE-ICON > ... > svg > path
+------------------CALCITE-BLOCK > ... > DIV > ARTICLE > DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Basemap"
+------------------------------------CALCITE-ICON > ... > svg > path
+---------------CALCITE-SPLIT-BUTTON > ... > DIV > DIV
+---------------------------CALCITE-BUTTON
+------------------------------... > DIV > BUTTON > SPAN
+------------------------------"Add layers"
+---------------------------DIV > DIV
+---------------------------CALCITE-DROPDOWN
+------------------------------... > DIV > DIV
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Add existing layers or create new layers") > CALCITE-ICON > ... > svg > path
+------------DIV > DIV
+------------------CALCITE-TABS
+---------------------... > SECTION
+---------------------DIV > DIV
+---------------------------CALCITE-TAB-NAV
+------------------------------... > DIV
+------------------------------------DIV
+------------------------------------DIV > DIV
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Form"
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Templates"
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Tasks"
+---------------------------DIV
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Undo: Add feature action") > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Save") > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-DROPDOWN
+---------------------------------... > DIV > DIV
+---------------------------------CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+---------------------CALCITE-TAB
+------------------------... > DIV > SECTION
+------------------------DIV > FA-LAYOUT-EDITOR > DIV
+---------------------------------FA-LAYOUTS-DROPDOWN > CALCITE-LABEL
+---------------------------------------... > DIV
+---------------------------------------DIV
+------------------------------------------SPAN > "Layouts"
+------------------------------------------CALCITE-ICON (aria-label: "information icon") > ... > svg > path
+---------------------------------------CALCITE-COMBOBOX > ... > DIV
+------------------------------------------------DIV
+---------------------------------------------------DIV
+------------------------------------------------------LABEL > "Layouts"
+------------------------------------------------------SPAN > SPAN > "New layout"
+---------------------------------------------------SPAN > CALCITE-ICON > ... > svg > path
+------------------------------------------------UL
+---------------------------------------------------LI > "All"
+---------------------------------------------------LI > "New layout"
+---------------------------------P > "New layout"
+---------------------------------FA-ACTION-CARD-LIST > FACE-SORTABLE-LIST
+---------------------------------------... > SECTION
+---------------------------------------FACE-SORTABLE-LIST-ITEM
+------------------------------------------... > DIV
+------------------------------------------FA-ACTION-GROUP-CARD > CALCITE-CARD
+------------------------------------------------... > DIV > DIV > SECTION > DIV
+------------------------------------------------SPAN > FACE-CARD-ACTIONS
+------------------------------------------------------... > CALCITE-ACTION-PAD > ... > DIV
+------------------------------------------------------FACE-CARD-ACTION > ... > CALCITE-ACTION > ... > DIV
+---------------------------------------------------------------------BUTTON (aria-label: "Duplicate") > DIV > CALCITE-ICON > ... > svg > path
+---------------------------------------------------------------------DIV
+------------------------------------------------------FACE-CARD-ACTION > ... > CALCITE-ACTION > ... > DIV
+---------------------------------------------------------------------BUTTON (aria-label: "Delete") > DIV > CALCITE-ICON > ... > svg > path
+---------------------------------------------------------------------DIV
+------------------------------------------------------FACE-CARD-ACTION > ... > CALCITE-ACTION > ... > DIV
+---------------------------------------------------------------------BUTTON (aria-label: "Collapse") > DIV > CALCITE-ICON > ... > svg > path
+---------------------------------------------------------------------DIV
+------------------------------------------------ARTICLE
+---------------------------------------------------HEADER
+------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------SPAN > "Attach"
+------------------------------------------------------CALCITE-CHIP
+---------------------------------------------------------... > DIV > DIV > SPAN
+---------------------------------------------------------"5"
+---------------------------------------------------FACE-COLLAPSIBLE
+------------------------------------------------------... > DIV
+------------------------------------------------------FA-ACTION-CARD-LIST > FACE-SORTABLE-LIST
+------------------------------------------------------------... > SECTION
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------SPAN > FACE-CARD-ACTIONS
+---------------------------------------------------------------------------... > CALCITE-ACTION-PAD > ... > DIV
+---------------------------------------------------------------------------FACE-CARD-ACTION > ... > CALCITE-ACTION > ... > DIV
+------------------------------------------------------------------------------------------BUTTON (aria-label: "Duplicate") > DIV > CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------------------------DIV
+---------------------------------------------------------------------------FACE-CARD-ACTION > ... > CALCITE-ACTION > ... > DIV
+------------------------------------------------------------------------------------------BUTTON (aria-label: "Delete") > DIV > CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------------------------DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Choose File"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Choose Photo or Video"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Record Audio"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Take Photo"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Take Video"
+------------------DIV > FACE-SIDE-PANEL-STACK
+------------------------... > DIV
+------------------------------CALCITE-PANEL > ... > DIV > ARTICLE
+------------------------------------------HEADER > DIV > DIV > DIV > "Layout builder"
+------------------------------------------DIV
+------------------------------CALCITE-PANEL > ... > DIV > ARTICLE
+------------------------------------------HEADER > DIV
+------------------------------------------------DIV > DIV > "Properties"
+------------------------------------------------DIV > CALCITE-ACTION (aria-label: "Close") > ... > DIV
+------------------------------------------------------------BUTTON (aria-label: "Close") > DIV > CALCITE-ICON > ... > svg > path
+------------------------------------------------------------DIV
+------------------------------------------DIV
+------------------------DIV
+---------------------------FA-LAYOUT-PROPERTIES > CALCITE-BLOCK
+---------------------------------... > DIV > ARTICLE
+------------------------------------------DIV > BUTTON
+------------------------------------------------HEADER > DIV > DIV > "Layout properties"
+------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------SECTION
+---------------------------------FACE-VALIDATED-FORM > FORM > FACE-VALIDATED-LABEL
+------------------------------------------... > CALCITE-LABEL
+------------------------------------------------... > DIV
+------------------------------------------------DIV > SPAN > "Layout title"
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Layout title") > ... > DIV > CALCITE-INPUT-TEXT > ... > DIV > DIV > DIV > INPUT
+---------------------------------DIV > DIV
+---------------------------------------CALCITE-LABEL
+------------------------------------------... > DIV
+------------------------------------------CALCITE-CHECKBOX > ... > DIV > DIV (aria-label: "Visible") > svg > path
+------------------------------------------DIV > P > "Visible"
+---------------------------------------DIV > CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+---------------------------FA-ACTIONS-BUILDER > CALCITE-BLOCK
+---------------------------------... > DIV > ARTICLE
+------------------------------------------DIV > BUTTON
+------------------------------------------------HEADER > DIV > DIV > "Layout elements"
+------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------SECTION
+---------------------------------CALCITE-LIST
+------------------------------------... > DIV > DIV
+---------------------------------------------DIV
+------------------------------------------------DIV > "Total items: 16."
+------------------------------------------------OL
+---------------------------------------------TABLE
+------------------------------------------------THEAD > TR > TH > CALCITE-STACK
+------------------------------------------------------------... > DIV > DIV
+------------------------------------------------------------CALCITE-FILTER (aria-label: "Find action") > ... > DIV > DIV > LABEL > CALCITE-INPUT > ... > DIV > DIV > DIV
+------------------------------------------------------------------------------------------INPUT (aria-label: "Filter")
+------------------------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------TBODY
+------------------------------------CALCITE-LIST-ITEM-GROUP
+---------------------------------------... > DIV > TR > TD > "CONFIGURABLE"
+---------------------------------------FACE-SORTABLE-LIST
+------------------------------------------... > SECTION
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Edit Field"
+------------------------------------------------CALCITE-ICON (aria-label: "Edit Field") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Integration"
+------------------------------------------------CALCITE-ICON (aria-label: "Integration") > ... > svg > path
+------------------------------------CALCITE-LIST-ITEM-GROUP
+---------------------------------------... > DIV > TR > TD > "SYSTEM"
+---------------------------------------FACE-SORTABLE-LIST
+------------------------------------------... > SECTION
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Attach"
+------------------------------------------------CALCITE-ICON (aria-label: "Attach") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Choose File"
+------------------------------------------------CALCITE-ICON (aria-label: "Choose File") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Choose Photo or Video"
+------------------------------------------------CALCITE-ICON (aria-label: "Choose Photo or Video") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Collect Here"
+------------------------------------------------CALCITE-ICON (aria-label: "Collect Here") > ... > svg
+------------------------DIV
+---------------------------CALCITE-BLOCK
+------------------------------... > DIV > ARTICLE
+---------------------------------------DIV > BUTTON
+---------------------------------------------HEADER > DIV > DIV > "Action properties"
+---------------------------------------------CALCITE-ICON > ... > svg > path
+---------------------------------------SECTION
+------------------------------FA-FORMATTING-EDITOR > FACE-VALIDATED-FORM > FORM
+---------------------------------------FACE-VALIDATED-LABEL
+------------------------------------------... > CALCITE-LABEL
+------------------------------------------------... > DIV
+------------------------------------------------DIV > SPAN > "Display name*"
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Display name*") > ... > DIV > CALCITE-INPUT-TEXT > ... > DIV > DIV > DIV > INPUT
+---------------------------------------FACE-VALIDATED-LABEL
+------------------------------------------... > CALCITE-LABEL
+------------------------------------------------... > DIV
+------------------------------------------------DIV > SPAN > "Icon*"
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Icon*") > ... > DIV > CALCITE-COMBOBOX > ... > DIV
+------------------------------------------------------------DIV
+---------------------------------------------------------------SPAN > CALCITE-ICON > ... > svg > path
+---------------------------------------------------------------DIV
+------------------------------------------------------------------LABEL > "Icon*"
+------------------------------------------------------------------SPAN > SPAN > "Attachment"
+---------------------------------------------------------------SPAN > CALCITE-ICON > ... > svg > path
+------------------------------------------------------------UL
+---------------------------------------------------------------LI > "Attachment"
+---------------------------------------------------------------LI > "Folder"
+---------------------------------------DIV
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Primary action") > ... > DIV > CALCITE-CHECKBOX > ... > DIV > DIV > svg
+------------------------------------------FACE-VALIDATED-LABEL > ... > CALCITE-LABEL
+---------------------------------------------------... > DIV
+---------------------------------------------------DIV > SPAN > "Primary action"
+------------------------------------------CALCITE-ICON (aria-label: "information icon") > ... > svg > path
+---------------------------CALCITE-BLOCK
+------------------------------... > DIV > ARTICLE
+---------------------------------------DIV > BUTTON
+---------------------------------------------HEADER > DIV
+---------------------------------------------------DIV > "Logic"
+---------------------------------------------------DIV > "Set dynamic visibility with Arcade expressions"
+---------------------------------------------CALCITE-ICON > ... > svg > path
+---------------------------------------SECTION
+------------------------------DIV
+---------------------------------CALCITE-LABEL
+------------------------------------... > DIV
+------------------------------------CALCITE-CHECKBOX > ... > DIV > DIV (aria-label: "Visible") > svg > path
+------------------------------------DIV > P > "Visible"
+---------------------------------DIV > CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+```
+
+After the action, the DOM Tree Structure (with annotations for attribute changes) looks like this:
+```
+BODY
+---DIV
+---HEADER
+------A (aria-label: "Field Maps Designer home page") > svg > path
+------DIV
+------NAV (aria-label: "Breadcrumb") > OL
+------------LI > A > "Maps"
+------------LI
+---------------CALCITE-ICON > ... > svg > path
+---------------LI (aria-label: "Map title: “itaque torrens aetas admiratio”") > "itaque torrens aetas admiratio"
+------------LI
+---------------CALCITE-ICON > ... > svg > path
+---------------LI (aria-label: "Layer title: “Fort Elyssa”") > "Fort Elyssa"
+------DIV > UL
+------------LI > DIV > CALCITE-DROPDOWN
+---------------------... > DIV > DIV
+---------------------CALCITE-BUTTON
+------------------------... > DIV > BUTTON
+---------------------------------CALCITE-ICON > ... > svg > path
+---------------------------------SPAN
+------------------------"local"
+------------LI > A > "Resources"
+------------DIV
+------------LI > DIV > DIV > BUTTON
+------------------------DIV > DIV > "LS"
+------------------------SPAN > "Lillie"
+---MAIN > DIV > DIV
+------------CALCITE-ACTION-BAR
+---------------... > CALCITE-ACTION-GROUP
+---------------------... > DIV
+---------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Collapse")
+---------------------------------DIV > CALCITE-ICON > ... > svg > path
+---------------------------------DIV > "Collapse"
+---------------CALCITE-ACTION-GROUP
+------------------... > DIV
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Overview")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Overview"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Forms (Indicator present)")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Forms"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Geofences")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Geofences"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Offline")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Offline"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "App settings")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "App settings"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Sharing")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Sharing"
+---------------CALCITE-ACTION-MENU
+------------------...
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Open")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Open"
+---------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "What’s New (Indicator present)")
+---------------------------DIV > CALCITE-ICON > ... > svg > path
+---------------------------DIV > "What’s New"
+------------DIV
+---------------HEADER > SPAN > "Forms"
+---------------DIV
+------------------INPUT
+------------------BUTTON (aria-label: "Filter content") > CALCITE-ICON > ... > svg > path
+---------------DIV
+------------------CALCITE-BLOCK
+---------------------... > DIV > ARTICLE
+------------------------------DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Layers"
+------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------SECTION
+---------------------CALCITE-LIST
+------------------------... > DIV > DIV
+---------------------------------DIV
+------------------------------------DIV > "Total items: 4."
+------------------------------------OL
+---------------------------------TABLE > TBODY
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"New Lelah"
+---------------------------DIV > CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"South Franciscoburgh"
+---------------------------DIV > CALCITE-ICON > ... > svg
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"Vonland"
+---------------------------DIV > CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"Fort Elyssa"
+---------------------------DIV
+------------------------------CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------------CALCITE-ICON > ... > svg > path
+------------------CALCITE-BLOCK > ... > DIV > ARTICLE > DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Tables"
+------------------------------------CALCITE-ICON > ... > svg > path
+------------------CALCITE-BLOCK > ... > DIV > ARTICLE > DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Basemap"
+------------------------------------CALCITE-ICON > ... > svg > path
+---------------CALCITE-SPLIT-BUTTON > ... > DIV > DIV
+---------------------------CALCITE-BUTTON
+------------------------------... > DIV > BUTTON > SPAN
+------------------------------"Add layers"
+---------------------------DIV > DIV
+---------------------------CALCITE-DROPDOWN
+------------------------------... > DIV > DIV
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Add existing layers or create new layers") > CALCITE-ICON > ... > svg > path
+------------DIV > DIV
+------------------CALCITE-TABS
+---------------------... > SECTION
+---------------------DIV > DIV
+---------------------------CALCITE-TAB-NAV
+------------------------------... > DIV
+------------------------------------DIV
+------------------------------------DIV > DIV
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Form"
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Templates"
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Tasks"
+---------------------------DIV
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Undo: Add feature action") > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Save") > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-DROPDOWN
+---------------------------------... > DIV > DIV
+---------------------------------CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+---------------------CALCITE-TAB
+------------------------... > DIV > SECTION
+------------------------DIV > FA-LAYOUT-EDITOR > DIV
+---------------------------------FA-LAYOUTS-DROPDOWN > CALCITE-LABEL
+---------------------------------------... > DIV
+---------------------------------------DIV
+------------------------------------------SPAN > "Layouts"
+------------------------------------------CALCITE-ICON (aria-label: "information icon") > ... > svg > path
+---------------------------------------CALCITE-COMBOBOX > ... > DIV
+------------------------------------------------DIV
+---------------------------------------------------DIV
+------------------------------------------------------LABEL > "Layouts"
+------------------------------------------------------SPAN > SPAN > "New layout"
+---------------------------------------------------SPAN > CALCITE-ICON > ... > svg > path
+------------------------------------------------UL
+---------------------------------------------------LI > "All"
+---------------------------------------------------LI > "New layout"
+---------------------------------P > "New layout"
+---------------------------------FA-ACTION-CARD-LIST > FACE-SORTABLE-LIST
+---------------------------------------... > SECTION
+---------------------------------------FACE-SORTABLE-LIST-ITEM["class:sc-fa-layout-editor hydrated sortable-selected->sc-fa-layout-editor hydrated","selected:->undefined"]
+------------------------------------------... > DIV
+------------------------------------------FA-ACTION-GROUP-CARD > CALCITE-CARD
+------------------------------------------------... > DIV > DIV > SECTION > DIV
+------------------------------------------------ARTICLE
+---------------------------------------------------HEADER
+------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------SPAN > "Attach"
+------------------------------------------------------CALCITE-CHIP
+---------------------------------------------------------... > DIV > DIV > SPAN
+---------------------------------------------------------"5"
+---------------------------------------------------FACE-COLLAPSIBLE
+------------------------------------------------------... > DIV
+------------------------------------------------------FA-ACTION-CARD-LIST > FACE-SORTABLE-LIST
+------------------------------------------------------------... > SECTION
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Choose File"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Choose Photo or Video"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Record Audio"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Take Photo"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Take Video"
+------------------DIV > FACE-SIDE-PANEL-STACK["is-overlay-open:->undefined"]
+------------------------... > DIV > CALCITE-PANEL > ... > DIV > ARTICLE
+------------------------------------------HEADER > DIV > DIV > DIV > "Layout builder"
+------------------------------------------DIV
+------------------------DIV
+---------------------------FA-LAYOUT-PROPERTIES > CALCITE-BLOCK
+---------------------------------... > DIV > ARTICLE
+------------------------------------------DIV > BUTTON
+------------------------------------------------HEADER > DIV > DIV > "Layout properties"
+------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------SECTION
+---------------------------------FACE-VALIDATED-FORM > FORM > FACE-VALIDATED-LABEL
+------------------------------------------... > CALCITE-LABEL
+------------------------------------------------... > DIV
+------------------------------------------------DIV > SPAN > "Layout title"
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Layout title") > ... > DIV > CALCITE-INPUT-TEXT > ... > DIV > DIV > DIV > INPUT
+---------------------------------DIV > DIV
+---------------------------------------CALCITE-LABEL
+------------------------------------------... > DIV
+------------------------------------------CALCITE-CHECKBOX > ... > DIV > DIV (aria-label: "Visible") > svg > path
+------------------------------------------DIV > P > "Visible"
+---------------------------------------DIV > CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+---------------------------FA-ACTIONS-BUILDER > CALCITE-BLOCK
+---------------------------------... > DIV > ARTICLE
+------------------------------------------DIV > BUTTON
+------------------------------------------------HEADER > DIV > DIV > "Layout elements"
+------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------SECTION
+---------------------------------CALCITE-LIST
+------------------------------------... > DIV > DIV
+---------------------------------------------DIV
+------------------------------------------------DIV > "Total items: 16."
+------------------------------------------------OL
+---------------------------------------------TABLE
+------------------------------------------------THEAD > TR > TH > CALCITE-STACK
+------------------------------------------------------------... > DIV > DIV
+------------------------------------------------------------CALCITE-FILTER (aria-label: "Find action") > ... > DIV > DIV > LABEL > CALCITE-INPUT > ... > DIV > DIV > DIV
+------------------------------------------------------------------------------------------INPUT (aria-label: "Filter")
+------------------------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------TBODY
+------------------------------------CALCITE-LIST-ITEM-GROUP
+---------------------------------------... > DIV > TR > TD > "CONFIGURABLE"
+---------------------------------------FACE-SORTABLE-LIST
+------------------------------------------... > SECTION
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Edit Field"
+------------------------------------------------CALCITE-ICON (aria-label: "Edit Field") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Integration"
+------------------------------------------------CALCITE-ICON (aria-label: "Integration") > ... > svg > path
+------------------------------------CALCITE-LIST-ITEM-GROUP
+---------------------------------------... > DIV > TR > TD > "SYSTEM"
+---------------------------------------FACE-SORTABLE-LIST
+------------------------------------------... > SECTION
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Attach"
+------------------------------------------------CALCITE-ICON (aria-label: "Attach") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Choose File"
+------------------------------------------------CALCITE-ICON (aria-label: "Choose File") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Choose Photo or Video"
+------------------------------------------------CALCITE-ICON (aria-label: "Choose Photo or Video") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+```
+
+Follow the following steps:
+
+Step 1: Use the following criteria along with any other information to determine if the step 'click the close button next to the properties heading' was performed.
+unknown 
+
+Note: all criteria must be met for the step to be performed.
+Prove if the step was performed. Answer Yes/No and Briefly explain what evidence supports your claim.
+
+Step 2: Score the agent's action between -1 and 1 in regards to the desired action. 
+Reward the agent for correct responses and punish it for incorrect ones so it eventually learns how to accomplish the task.
+
+Format your output like so:
+```
+{
+    "Answer": <'Yes' if step was performed, 'No' otherwise>
+    "Explanation": <brief evidence to support answer>
+    "Score": <score between 0-1>
+}
+```
+
+Output:
+---
+Response:```
+{
+    "Answer": "Yes",
+    "Explanation": "The close button next to the properties heading is present in the DOM structure after the action, indicating that the button was clicked and the properties section was closed.",
+    "Score": 1
+}
+```
+---
+Prompt:
+An autonomous agent is exploring a web page. 
+
+The agent has recently performed an action on the web page which may have changed its content.
+
+We want to assert whether at the current time the following is true about the web page:
+    'Assert the layout builder panel is hidden'
+
+A simplified version of the DOM Tree after the interaction is as follows:
+```
+BODY
+---DIV
+---HEADER
+------A (aria-label: "Field Maps Designer home page") > svg > path
+------DIV
+------NAV (aria-label: "Breadcrumb") > OL
+------------LI > A > "Maps"
+------------LI
+---------------CALCITE-ICON > ... > svg > path
+---------------LI (aria-label: "Map title: “itaque torrens aetas admiratio”") > "itaque torrens aetas admiratio"
+------------LI
+---------------CALCITE-ICON > ... > svg > path
+---------------LI (aria-label: "Layer title: “Fort Elyssa”") > "Fort Elyssa"
+------DIV > UL
+------------LI > DIV > CALCITE-DROPDOWN
+---------------------... > DIV > DIV
+---------------------CALCITE-BUTTON
+------------------------... > DIV > BUTTON
+---------------------------------CALCITE-ICON > ... > svg > path
+---------------------------------SPAN
+------------------------"local"
+------------LI > A > "Resources"
+------------DIV
+------------LI > DIV > DIV > BUTTON
+------------------------DIV > DIV > "LS"
+------------------------SPAN > "Lillie"
+---MAIN > DIV > DIV
+------------CALCITE-ACTION-BAR
+---------------... > CALCITE-ACTION-GROUP
+---------------------... > DIV
+---------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Collapse")
+---------------------------------DIV > CALCITE-ICON > ... > svg > path
+---------------------------------DIV > "Collapse"
+---------------CALCITE-ACTION-GROUP
+------------------... > DIV
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Overview")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Overview"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Forms (Indicator present)")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Forms"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Geofences")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Geofences"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Offline")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Offline"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "App settings")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "App settings"
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Sharing")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Sharing"
+---------------CALCITE-ACTION-MENU
+------------------...
+------------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "Open")
+------------------------------DIV > CALCITE-ICON > ... > svg > path
+------------------------------DIV > "Open"
+---------------CALCITE-ACTION > ... > DIV > BUTTON (aria-label: "What’s New (Indicator present)")
+---------------------------DIV > CALCITE-ICON > ... > svg > path
+---------------------------DIV > "What’s New"
+------------DIV
+---------------HEADER > SPAN > "Forms"
+---------------DIV
+------------------INPUT
+------------------BUTTON (aria-label: "Filter content") > CALCITE-ICON > ... > svg > path
+---------------DIV
+------------------CALCITE-BLOCK
+---------------------... > DIV > ARTICLE
+------------------------------DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Layers"
+------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------SECTION
+---------------------CALCITE-LIST
+------------------------... > DIV > DIV
+---------------------------------DIV
+------------------------------------DIV > "Total items: 4."
+------------------------------------OL
+---------------------------------TABLE > TBODY
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"New Lelah"
+---------------------------DIV > CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"South Franciscoburgh"
+---------------------------DIV > CALCITE-ICON > ... > svg
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"Vonland"
+---------------------------DIV > CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------CALCITE-LIST-ITEM
+---------------------------... > DIV > DIV > TR
+---------------------------------------TD > DIV
+---------------------------------------TD
+---------------------------CALCITE-LABEL
+------------------------------... > DIV
+------------------------------"Fort Elyssa"
+---------------------------DIV
+------------------------------CALCITE-ICON (aria-label: "Layer status") > ... > svg > path
+------------------------------CALCITE-ICON > ... > svg > path
+------------------CALCITE-BLOCK > ... > DIV > ARTICLE > DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Tables"
+------------------------------------CALCITE-ICON > ... > svg > path
+------------------CALCITE-BLOCK > ... > DIV > ARTICLE > DIV > BUTTON
+------------------------------------HEADER > DIV > H3 > "Basemap"
+------------------------------------CALCITE-ICON > ... > svg > path
+---------------CALCITE-SPLIT-BUTTON > ... > DIV > DIV
+---------------------------CALCITE-BUTTON
+------------------------------... > DIV > BUTTON > SPAN
+------------------------------"Add layers"
+---------------------------DIV > DIV
+---------------------------CALCITE-DROPDOWN
+------------------------------... > DIV > DIV
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Add existing layers or create new layers") > CALCITE-ICON > ... > svg > path
+------------DIV > DIV
+------------------CALCITE-TABS
+---------------------... > SECTION
+---------------------DIV > DIV
+---------------------------CALCITE-TAB-NAV
+------------------------------... > DIV
+------------------------------------DIV
+------------------------------------DIV > DIV
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Form"
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Templates"
+------------------------------CALCITE-TAB-TITLE
+---------------------------------... > DIV > DIV > DIV
+---------------------------------SPAN > "Tasks"
+---------------------------DIV
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Undo: Add feature action") > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-BUTTON > ... > DIV > BUTTON (aria-label: "Save") > CALCITE-ICON > ... > svg > path
+------------------------------CALCITE-DROPDOWN
+---------------------------------... > DIV > DIV
+---------------------------------CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+---------------------CALCITE-TAB
+------------------------... > DIV > SECTION
+------------------------DIV > FA-LAYOUT-EDITOR > DIV
+---------------------------------FA-LAYOUTS-DROPDOWN > CALCITE-LABEL
+---------------------------------------... > DIV
+---------------------------------------DIV
+------------------------------------------SPAN > "Layouts"
+------------------------------------------CALCITE-ICON (aria-label: "information icon") > ... > svg > path
+---------------------------------------CALCITE-COMBOBOX > ... > DIV
+------------------------------------------------DIV
+---------------------------------------------------DIV
+------------------------------------------------------LABEL > "Layouts"
+------------------------------------------------------SPAN > SPAN > "New layout"
+---------------------------------------------------SPAN > CALCITE-ICON > ... > svg > path
+------------------------------------------------UL
+---------------------------------------------------LI > "All"
+---------------------------------------------------LI > "New layout"
+---------------------------------P > "New layout"
+---------------------------------FA-ACTION-CARD-LIST > FACE-SORTABLE-LIST
+---------------------------------------... > SECTION
+---------------------------------------FACE-SORTABLE-LIST-ITEM["class:sc-fa-layout-editor hydrated sortable-selected->sc-fa-layout-editor hydrated","selected:->undefined"]
+------------------------------------------... > DIV
+------------------------------------------FA-ACTION-GROUP-CARD > CALCITE-CARD
+------------------------------------------------... > DIV > DIV > SECTION > DIV
+------------------------------------------------ARTICLE
+---------------------------------------------------HEADER
+------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------SPAN > "Attach"
+------------------------------------------------------CALCITE-CHIP
+---------------------------------------------------------... > DIV > DIV > SPAN
+---------------------------------------------------------"5"
+---------------------------------------------------FACE-COLLAPSIBLE
+------------------------------------------------------... > DIV
+------------------------------------------------------FA-ACTION-CARD-LIST > FACE-SORTABLE-LIST
+------------------------------------------------------------... > SECTION
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Choose File"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Choose Photo or Video"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Record Audio"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Take Photo"
+------------------------------------------------------------FACE-SORTABLE-LIST-ITEM
+---------------------------------------------------------------... > DIV
+---------------------------------------------------------------FA-ACTION-CARD > CALCITE-CARD
+---------------------------------------------------------------------... > DIV > DIV > SECTION > DIV
+---------------------------------------------------------------------DIV
+------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------------------------------SPAN > "Take Video"
+------------------DIV > FACE-SIDE-PANEL-STACK["is-overlay-open:->undefined"]
+------------------------... > DIV > CALCITE-PANEL > ... > DIV > ARTICLE
+------------------------------------------HEADER > DIV > DIV > DIV > "Layout builder"
+------------------------------------------DIV
+------------------------DIV
+---------------------------FA-LAYOUT-PROPERTIES > CALCITE-BLOCK
+---------------------------------... > DIV > ARTICLE
+------------------------------------------DIV > BUTTON
+------------------------------------------------HEADER > DIV > DIV > "Layout properties"
+------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------SECTION
+---------------------------------FACE-VALIDATED-FORM > FORM > FACE-VALIDATED-LABEL
+------------------------------------------... > CALCITE-LABEL
+------------------------------------------------... > DIV
+------------------------------------------------DIV > SPAN > "Layout title"
+------------------------------------------FACE-VALIDATED-INPUT (aria-label: "Layout title") > ... > DIV > CALCITE-INPUT-TEXT > ... > DIV > DIV > DIV > INPUT
+---------------------------------DIV > DIV
+---------------------------------------CALCITE-LABEL
+------------------------------------------... > DIV
+------------------------------------------CALCITE-CHECKBOX > ... > DIV > DIV (aria-label: "Visible") > svg > path
+------------------------------------------DIV > P > "Visible"
+---------------------------------------DIV > CALCITE-BUTTON > ... > DIV > BUTTON > CALCITE-ICON > ... > svg > path
+---------------------------FA-ACTIONS-BUILDER > CALCITE-BLOCK
+---------------------------------... > DIV > ARTICLE
+------------------------------------------DIV > BUTTON
+------------------------------------------------HEADER > DIV > DIV > "Layout elements"
+------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------SECTION
+---------------------------------CALCITE-LIST
+------------------------------------... > DIV > DIV
+---------------------------------------------DIV
+------------------------------------------------DIV > "Total items: 16."
+------------------------------------------------OL
+---------------------------------------------TABLE
+------------------------------------------------THEAD > TR > TH > CALCITE-STACK
+------------------------------------------------------------... > DIV > DIV
+------------------------------------------------------------CALCITE-FILTER (aria-label: "Find action") > ... > DIV > DIV > LABEL > CALCITE-INPUT > ... > DIV > DIV > DIV
+------------------------------------------------------------------------------------------INPUT (aria-label: "Filter")
+------------------------------------------------------------------------------------------CALCITE-ICON > ... > svg > path
+------------------------------------------------TBODY
+------------------------------------CALCITE-LIST-ITEM-GROUP
+---------------------------------------... > DIV > TR > TD > "CONFIGURABLE"
+---------------------------------------FACE-SORTABLE-LIST
+------------------------------------------... > SECTION
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Edit Field"
+------------------------------------------------CALCITE-ICON (aria-label: "Edit Field") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Integration"
+------------------------------------------------CALCITE-ICON (aria-label: "Integration") > ... > svg > path
+------------------------------------CALCITE-LIST-ITEM-GROUP
+---------------------------------------... > DIV > TR > TD > "SYSTEM"
+---------------------------------------FACE-SORTABLE-LIST
+------------------------------------------... > SECTION
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Attach"
+------------------------------------------------CALCITE-ICON (aria-label: "Attach") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Choose File"
+------------------------------------------------CALCITE-ICON (aria-label: "Choose File") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+------------------------------------------------DIV > SPAN > "Choose Photo or Video"
+------------------------------------------------CALCITE-ICON (aria-label: "Choose Photo or Video") > ... > svg > path
+------------------------------------------CALCITE-LIST-ITEM
+---------------------------------------------... > DIV
+---------------------------------------------------DIV
+---------------------------------------------------DIV > DIV
+---------------------------------------------SECTION
+```
+
+Note that tree only displays elements of the DOM that are visible (based on Bounding Rectangle and CSS Styling) and within the visible window.
+It is annotated to show changes in attributes due to the most recent interaction of the agent with the web page.
+
+Ouput one of the three following options:
+1. 'Ready' if you are ready to answer whether the assertion is true
+2. '2' if you need to know the full list of attributes for a particular element in the DOM
+3. '3' if you need the DOM Tree before the interaction
+
+Output:
+---
+Response:'2'
+---
+Prompt:
+<history>
+
+Given the information about the DOM provided and any extra information, consider the following questions:
+
+Question 1: do you think the assertion is true or false?
+Question 2: what evidence supports your claim
+
+Considering your answers to the above questions, provide evidence, then whether the assertion 'Assert the layout builder panel is hidden' is true/false, and how confident you are (0-1).
+
+Format like so:
+```
+{
+    "isAssertionPassed": <'true' if assertion is true; 'false' otherwise>
+    "evidence": <brief evidence>
+    "confidence": <confidence in correctness of response (0-1)>
+}
+```
+
+Your Response:
+---
+Response:```
+{
+    "isAssertionPassed": "false",
+    "evidence": "The DOM tree includes a DIV with the header 'Layout builder', indicating that the layout builder panel is currently visible.",
+    "confidence": 0.9
+}
+```
+---

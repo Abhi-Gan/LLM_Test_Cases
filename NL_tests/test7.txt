@@ -1,0 +1,7 @@
+/run ./training-out/create_new_layout
+
+click the undo button
+    the first layout card is no longer there
+    the canvas is now empty
+    the undo button can no longer be clicked
+    the redo button can be clicked
