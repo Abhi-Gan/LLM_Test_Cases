@@ -508,6 +508,7 @@ ${domTreeString}
 ${WebAgent.tripleBackQuotes}
 
 In this DOM Tree Structure, '...' refers to a Shadow Root.
+The number of the dashes ('---') conveys the relationship between an element and the element in the previous line; longer means child, same means sibling, etc.
 
 Your task is to:
 \`\`\`
@@ -533,7 +534,7 @@ Step 2: What type of interaction do you want to perform on the above element? (e
 Step 3: Based on your answer to Step 1, identify the code that in Playwright that should be passed into "locatorCode" that can be used to find the relevant element via a locator.
 
 Note you can chain locators like page.getByRole('...').locator('...').getByText('...').
-Minimize the number of chained locators while maintaining specificity.
+Minimize the number of chained locators while maintaining specificity accurate to the DOM.
 
 The locators you can may are listed in the examples below.
 
@@ -541,8 +542,9 @@ Also consider these notes:
  - getByRole locates elements by its implicit role; however doesn't work for custom elements. ex: works for button, but not for CALCIT-LIST-ITEM
  - getByText matches elements by text. Use { exact: true } and consider applying another locator before chaining getByText.
  - Use getByLabel to find alements by associated <label> or aria-label attribute
- - You can narrow down the query to the nth match using the nth= locator with a 0 based index; e.g. .locator('nth=4')
+ - Get the nth match using the nth= locator with a 0 based index; e.g. .locator('nth=4')
  - Minimize usage of XPath / CSS selectors as they cannot go through a Shadow DOM and are more brittle than other selectors; if needed use chaining instead
+ - we will always add a .first() locator to find the first matching element.
  
 We will evaluate the code passed into "locatorCode" to get the first matching element in Playwright. 
 You are looking at test data so try not to refer to the test data text in your selectors.
