@@ -3,4 +3,5 @@
 drag the 'Attach' layout element to the fa-action-card-list element in the canvas
     an 'Attach' card should be visible in the canvas and its properties panel shows up over the layout builder panel
 click the close button next to the properties heading
-Assert the layout builder panel is hidden
+    the action properties panel is no longer present
+    the layout builder panel is present

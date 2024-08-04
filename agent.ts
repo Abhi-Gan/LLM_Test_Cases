@@ -1,7 +1,7 @@
 import { TextNode } from "node-html-parser";
 import OpenAI from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
-import { chromium, Browser, Page, Locator } from 'playwright'
+import { chromium, Browser, BrowserContext, Page, Locator } from 'playwright'
 import * as prettier from 'prettier' 
 import {performance} from 'perf_hooks'
 import JSON5 from 'json5'
@@ -48,6 +48,8 @@ export class WebAgent {
     static DRAG_AND_DROP = "dragAndDrop"
 
     private page: Page | undefined;
+    private context: BrowserContext | undefined;
+    private browser: Browser | undefined;
 
     public constructor(llmClient: OpenAI, app_description: string, webapp_url: string, epsilon = 0, alpha = 1, gamma = 0.9, verbose = true) {
         this.llmClient = llmClient;
@@ -65,6 +67,12 @@ export class WebAgent {
         await this.page!.waitForTimeout(seconds * 1000);
     }
 
+    public async closingActions() {
+        this.page?.close();
+        this.context?.close();
+        this.browser?.close();
+    }
+
     public async loadPage(webapp_url = this.webapp_url) {
         // load 
         const browser = await chromium.launch({ "headless": false }); //, slowMo: 100
@@ -72,6 +80,8 @@ export class WebAgent {
         const page = await context.newPage();
 
         this.page = page;
+        this.context = context;
+        this.browser = browser;
 
         await page.goto(webapp_url);
 
@@ -620,7 +630,7 @@ Each interaction should be provided in JSON format with the following structure:
 Follow the following steps as a guide:
 
 Step 1: What part(s) of the DOM Tree above is relevant to the step "${wfStep}"?
- - consider a user might say something that isn't technically correct. For example when they say to click a certain button the element being referred to may not necessarily have 'button' tag, or may have spelling mistakes.
+ - consider a user might say something that isn't technically correct. For example when they say to 'click the add button' the element being referred to may not literally have 'button' tag, or may have spelling mistakes.
  - You must infer what elements are relevant based on the semantics of the step and context provided by the DOM.
 
 Step 2: What type of interaction do you want to perform on the above element? (e.g. click, type, etc.)
@@ -628,13 +638,13 @@ Step 2: What type of interaction do you want to perform on the above element? (e
 Step 3: Based on your answer to Step 1, identify the code that in Playwright that should be passed into "locatorCode" that can be used to find the relevant element via a locator.
 
 Note you can chain locators like page.getByRole('...').locator('...').getByText('...').
-Howevr, try to minimize the number of chained locators while maintaining specificity.
+Minimize the number of chained locators while maintaining specificity.
 
 The locators you can may are listed in the examples below.
 
 Also consider these notes:
  - getByRole locates elements by its implicit role; however doesn't work for custom elements. ex: works for button, but not for CALCIT-LIST-ITEM
- - getByText can easily match multiple elements so use exact matching and possibly apply another locator before chaining this 
+ - getByText matches elements by text. Use { exact: true } and consider applying another locator before chaining getByText.
  - Use getByLabel to find alements by associated <label> or aria-label attribute
  - You can narrow down the query to the nth match using the nth= locator with a 0 based index; e.g. .locator('nth=4')
  - Minimize usage of XPath / CSS selectors as they cannot go through a Shadow DOM and are more brittle than other selectors; if needed use chaining instead
@@ -650,17 +660,17 @@ Your output should be in JSON format. No trailing commas.
 Examples:
 ${WebAgent.tripleBackQuotes}
 // getByRole
-{"action": "click", "locatorCode:”page.getByRole('button', { name: submit }”)}
+{"action": "click", "locatorCode": "page.getByRole('button', { name: submit })"}
 // getByLabel
-{"action": “enter”, "locatorCode:”page.getByLabel('Password’)”}
+{"action": “enter”, "locatorCode": "page.getByLabel('Password’)”}
 // getByText
-{"action": “tab”, "locatorCode:”page.getByText('Welcome, John'), { exact: true }”}
+{"action": “tab”, "locatorCode": "page.getByText('Welcome, John'), { exact: true }”}
 // getByTestID
-{"action": “type”, "locatorCode:”page.getByTestId('directions’)”, “value”:”180 New York Streets”}
+{"action": “type”, "locatorCode": "page.getByTestId('directions’)”, “value”:”180 New York Street”}
 // XPath:
 {"action": "click", "locatorCode": "page.locator('[data-test-interactions]');"}
 // CSS:
-{"action": "click", "locatorCode": "CALCITE-LIST-ITEM:nth-child(4)"}
+{"action": "click", "locatorCode": "page.locator('CALCITE-LIST-ITEM:nth-child(4)')"}
 ${WebAgent.tripleBackQuotes}
 
 Recall, I need to: ${wfStep} 
@@ -720,7 +730,7 @@ Output:\n`
             case WebAgent.CLICK:
                 // click
                 // const locator = curPage.locator(selector)
-                await firstMatchLocator.click();
+                await firstMatchLocator.click({ timeout: WebAgent.MAX_WAIT });
                 break;
             case WebAgent.ENTER:
                 // enter
@@ -730,9 +740,9 @@ Output:\n`
                 // ensures value is input
                 const valStr = value!;
                 // clear
-                await firstMatchLocator.fill('');
+                await firstMatchLocator.fill('', { timeout: WebAgent.MAX_WAIT });
                 // use type sequentially instead!
-                await firstMatchLocator.pressSequentially(valStr);
+                await firstMatchLocator.pressSequentially(valStr, { timeout: WebAgent.MAX_WAIT });
                 break;
             case WebAgent.TAB:
                 // tab
@@ -745,7 +755,7 @@ Output:\n`
                 const toLocator = await eval(`${runnableToLocatorCode}`);
                 const firstMatchToLocator = toLocator.first();
                 await firstMatchToLocator.waitFor({ timeout: WebAgent.MAX_WAIT })
-                await firstMatchLocator.dragTo(firstMatchToLocator);
+                await firstMatchLocator.dragTo(firstMatchToLocator, { timeout: WebAgent.MAX_WAIT });
 
                 break;
         }
@@ -763,7 +773,7 @@ Output:\n`
 
 The agent performed some action on the page.
 
-The webapp has the following DOM Tree Structure (simplified + only human visible elements) before the action:
+Before the action, the webapp has the following DOM Tree Structure (simplified + only human visible elements):
 ${WebAgent.tripleBackQuotes}
 ${beforeDOM}
 ${WebAgent.tripleBackQuotes}
@@ -775,10 +785,12 @@ ${WebAgent.tripleBackQuotes}
 
 Follow the following steps:
 
-Step 1: Use the following criteria along with any other information to determine if the step '${wfStep}' was performed.
+Step 1: Identify the differences between the DOM before and after the interaction, if any.
+
+Step 2: Use the following criteria along with any other information to determine if the step '${wfStep}' was performed.
+We expect to see the following side effects:
 ${expectations} 
 
-Note: all criteria must be met for the step to be performed.
 Prove if the step was performed. Answer Yes/No and Briefly explain what evidence supports your claim.
 
 Step 2: Score the agent's action between -1 and 1 in regards to the desired action. 
@@ -787,8 +799,8 @@ Reward the agent for correct responses and punish it for incorrect ones so it ev
 Format your output like so:
 ${WebAgent.tripleBackQuotes}
 {
-    "Answer": <'Yes' if step was performed, 'No' otherwise>
     "Explanation": <brief evidence to support answer>
+    "Answer": <'Yes' if step was performed, 'No' otherwise>
     "Score": <score between 0-1>
 }
 ${WebAgent.tripleBackQuotes}
@@ -912,16 +924,24 @@ Your Response:
     }
 
     // TODO: edit params
-    public async runStep(wfStep:string, expectations?:string, prevDOM?:string):Promise<[boolean, string | undefined, number]> {
-        let startTime = performance.now();
+    public async runStep(wfStep:string, expectations?:string, prevDOM?:string):Promise<[boolean, string | undefined, number[]]> {
+        let overallStepTime = performance.now();
+        let cumLLMTime = 0;
+        let cumPreprocTime = 0;
+        let cumPlaywrightTime = 0;
 
-        let afterDOM:string|undefined;
+        let afterDOMAttr:string|undefined;
 
         let passedStep:boolean = false;
 
         if (wfStep.startsWith("Assert")) {
+            let tempTime = performance.now();
             const curAttrDOM = await this.getDOMTree(true, true);
+            cumPreprocTime += performance.now() - tempTime;
+            
+            tempTime = performance.now();
             const response = await this.runAssertion(wfStep, prevDOM ? prevDOM: 'unknown', curAttrDOM); 
+            cumLLMTime += performance.now() - tempTime;
 
             // parse response
             if (response.trim().length > 0) {
@@ -930,8 +950,10 @@ Your Response:
             }
         }
         else {
+            let tempTime = performance.now();
             // get dom string before
             const beforeDOM = await this.getDOMTree(true, false);
+            cumPreprocTime += performance.now() - tempTime;
 
             // find action:string, locatorCode:string
             // const elemInteractionsStr = await this.getElemInteractions(wfStep);
@@ -949,7 +971,10 @@ Your Response:
             let numTries = 0;
             while(!successfulInteraction && numTries < 4) {
                 try {
+                    tempTime = performance.now();
                     const elemInteractionsStr = await this.getElemInteractions(wfStep, errorMsgs);
+                    cumLLMTime += performance.now() - tempTime;
+
                     // Remove the "```json" and "```" tags from the string
                     const cleanedResponse = elemInteractionsStr.replace(/```json|```/g, '');
                     const elemInteractionObj = JSON5.parse(cleanedResponse);
@@ -961,15 +986,23 @@ Your Response:
                         const toLocatorCode = curDict["toLocatorCode"];
         
                         // perform action
+                        tempTime = performance.now();
                         await this.runElemInteraction(action, locatorCode, value, toLocatorCode);
+                        cumPlaywrightTime += performance.now() - tempTime;
                         
+                        tempTime = performance.now();
                         // TODO: ask correct action here
                         // get dom string after w attribute mutations
-                        afterDOM = await this.getDOMTree(true, true);
+                        afterDOMAttr = await this.getDOMTree(true, true);
+                        cumPreprocTime += performance.now() - tempTime;
         
                         const renderExpectations = expectations ? expectations : 'unknown';
+
+                        tempTime = performance.now();
                         // LLM: was desired action performed?
-                        const response = await this.askCorrectAction(wfStep, renderExpectations, beforeDOM, afterDOM);
+                        const response = await this.askCorrectAction(wfStep, renderExpectations, beforeDOM, afterDOMAttr);
+                        cumLLMTime += performance.now() - tempTime;
+
                         const cleanedResponse = JSON5.parse(response.replace(/```json|```/g, ''));
 
                         // TODO: based on response decide if interaction is success or not
@@ -979,15 +1012,29 @@ Your Response:
                         console.log(`Error with step ${wfStep}!\n${error}`)
 
                         const responseStr = JSON.stringify(elemInteractionObj)
-                        const errorStr:string = `${error}` // .slice(0,200)
+                        const errorStr:string = `${error}`//.slice(0,700)
                         // ${responseStr}
-                        const errorInfoStr = `Bad response; led to error: ${errorStr}...`;
+                        const errorInfoStr = `Bad response; led to error: ${errorStr}`;//...`;
                         errorMsgs.push(errorInfoStr);
                     }
                 }
                 catch (error) {
                     errorMsgs.push(error as string)
                     //console.log(error);
+                }
+                
+                // TODO: if not successful interaction but DOM changed, must restart somehow
+                // for now break
+                if (!successfulInteraction) {
+                    tempTime = performance.now();
+                    const afterDOM = await this.getDOMTree(true, false);
+                    cumPreprocTime += performance.now() - tempTime;
+                    console.log(`Unsuccessful interaction; DOM equals: ${beforeDOM === afterDOM}`)
+                    if (beforeDOM !== afterDOM) {
+                        // DOM changed
+                        // force fail
+                        numTries = 5;
+                    }
                 }
 
                 numTries += 1
@@ -996,9 +1043,9 @@ Your Response:
             passedStep = successfulInteraction;
         }
         
-        startTime = performance.now() - startTime;
+        overallStepTime = performance.now() - overallStepTime;
 
-        return [passedStep, afterDOM, startTime];
+        return [passedStep, afterDOMAttr, [overallStepTime/1000, cumLLMTime/1000, cumPreprocTime/1000, cumPlaywrightTime/1000]];
     }
 
     public async runInteractionTest() {

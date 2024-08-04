@@ -196,7 +196,7 @@ async function tryAgent() {
     // await curAgent.runElemInteraction("dragAndDrop", "page.getByText('Copy of test field name')", undefined, "page.getByText('test field name')");
     console.log("done");
 }
-async function runSampleTest(app_description, webapp_url, testFname, indent = '    ') {
+async function runSampleTest(app_description, webapp_url, testFname, indent = '    ', metrics_csv = 'metrics.csv', shouldPass, closeAtEnd = false) {
     var _a;
     const prompt = (0, prompt_sync_1.default)();
     let testTime = performance.now();
@@ -228,7 +228,10 @@ async function runSampleTest(app_description, webapp_url, testFname, indent = ' 
     }
     let prevDOM;
     const stepTimes = [];
-    for (const curStep of steps) {
+    let passingTest = true;
+    let [testOverallTime, testLLMTime, testPreprocTime, testPlaywrightTime] = [0, 0, 0, 0];
+    for (let index = 0; index < steps.length; index++) {
+        const curStep = steps[index];
         const wfStep = curStep.step;
         const seStr = (_a = curStep.sideEffects) === null || _a === void 0 ? void 0 : _a.map(sePlain => `${indent}- ${sePlain}`).join('\n');
         console.log(wfStep);
@@ -256,12 +259,17 @@ async function runSampleTest(app_description, webapp_url, testFname, indent = ' 
         else {
             // normal wf step doesn't need prev dom
             const passPrevDOM = isAssert ? prevDOM : undefined;
-            let stepTime = 0;
+            let stepTimes = [0, 0, 0, 0];
             let passedStep = false;
-            [passedStep, prevDOM, stepTime] = await curAgent.runStep(wfStep, seStr, passPrevDOM);
-            stepTimes.push(stepTime / 1000); // get time in sec
+            [passedStep, prevDOM, stepTimes] = await curAgent.runStep(wfStep, seStr, passPrevDOM);
+            const [stepOverallTime, stepLLMTime, stepPreprocTime, stepPlaywrightTime] = stepTimes;
+            testOverallTime += stepOverallTime;
+            testLLMTime += stepLLMTime;
+            testPreprocTime += stepPreprocTime;
+            testPlaywrightTime += stepPlaywrightTime;
             console.log(`${passedStep ? 'passed' : 'failed'} step.`);
             if (!passedStep) {
+                passingTest = false;
                 break;
             }
             // if (isAssert) {
@@ -287,6 +295,19 @@ async function runSampleTest(app_description, webapp_url, testFname, indent = ' 
         // const stepPerformedHuman = prompt("Was LLM correct?");
         // console.log(`human eval: ${stepPerformedHuman}`);
     }
+    // write info to metrics_csv
+    // create write stream
+    const writeStream = fs.createWriteStream(metrics_csv, { flags: 'a' });
+    // const colNames = [
+    //     'testName',
+    //     'passed',
+    //     'OverallTime','LLMTime', 'PreprocTime', 'PlaywrightTime',
+    // ]
+    // // write col headers
+    // writeStream.write(`${colNames.join(',')}\n`);
+    const colVals = [testFname, passingTest, shouldPass, steps.length, testOverallTime, testLLMTime, testPreprocTime, testPlaywrightTime];
+    writeStream.write(`${colVals.join(',')}\n`);
+    console.log(passingTest ? "passed test." : "failed test.");
     console.log("done");
     testTime = performance.now() - testTime;
     // print all the times
@@ -294,6 +315,26 @@ async function runSampleTest(app_description, webapp_url, testFname, indent = ' 
     stepTimes.forEach((time) => {
         console.log(time);
     });
+    if (closeAtEnd) {
+        await curAgent.closingActions();
+    }
+}
+async function repeatTests(testFnameList, shouldPassList, nReps = 1) {
+    if (testFnameList.length !== shouldPassList.length) {
+        console.log("Error! list lengths of repeatTests do not match!");
+        return false;
+    }
+    else {
+        console.log(`training on all ${testFnameList.length} tests`);
+        for (let i = 0; i < testFnameList.length; i++) {
+            const testFname = testFnameList[i];
+            const shouldPass = shouldPassList[i];
+            for (let i = 0; i < nReps; i++) {
+                await runSampleTest("app that lets you configure layers and layouts", webapp_url, testFname, undefined, undefined, shouldPass, true);
+            }
+        }
+        return true;
+    }
 }
 const webapp_url = "https://local.arcgis.com:4200/maps/3/forms";
 const parent_dir = path.dirname(__dirname);
@@ -312,4 +353,9 @@ fs.mkdirSync(training_out_dir);
 const out_fpath = path.join(training_out_dir, "test.txt");
 // run(webapp_url, out_fpath);
 //tryAgent();
-runSampleTest("app that lets you configure layers and layouts", webapp_url, "./NL_tests/test4.txt");
+//"./NL_tests/test4.txt"
+//"test1.txt", 
+runSampleTest("app that lets you configure layers and layouts", webapp_url, "./NL_tests/test4.txt", undefined, undefined, true, true);
+// const testCaseFpaths = ["test2.txt", "test3.txt", "test7.txt"].map(fname => `./NL_tests/${fname}`);
+// const shouldPass = [true, true, true, true]
+// repeatTests(testCaseFpaths, shouldPass, 10);

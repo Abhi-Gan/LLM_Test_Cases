@@ -1,4 +1,4 @@
-import {chromium, Browser, Page} from 'playwright'
+import { chromium, Browser, Page } from 'playwright'
 import * as fs from "fs"
 import * as fsExtra from "fs-extra"
 import * as path from "path"
@@ -18,13 +18,13 @@ async function getLLMResponse(prompt: string) {
     const completion = await openai.chat.completions.create({
         messages: [
             { role: "system", content: "You are a helpful assistant." },
-            { role: "user", content: prompt}
+            { role: "user", content: prompt }
         ],
         model: "gpt-3.5-turbo-0125",
         n: 1,
         temperature: 0.3
-      });
-    
+    });
+
     return completion.choices[0].message.content
 }
 
@@ -51,7 +51,7 @@ async function get_relev_elems(page: Page) {
     // CSS selector
     const locator = page.locator('[data-test-interactions]');
     // may need to wait until elements are visible...
-    await locator.first().waitFor({timeout: 5000});
+    await locator.first().waitFor({ timeout: 5000 });
     // get list of interactable elems
     const elems = await locator.all();
     return elems;
@@ -61,8 +61,8 @@ async function run(webapp_url: string, out_fpath: string) {
     let startupTime = curTime();
 
     // TODO: remove slowMo for training speed later
-    const browser = await chromium.launch({"headless": false, slowMo: 100});
-    const context = await browser.newContext({"ignoreHTTPSErrors": true});
+    const browser = await chromium.launch({ "headless": false, slowMo: 100 });
+    const context = await browser.newContext({ "ignoreHTTPSErrors": true });
     const page = await context.newPage();
 
     await page.goto(webapp_url);
@@ -93,11 +93,11 @@ async function tryAgent() {
     await curAgent.loadPage();
     // const interactableElems = await curAgent.getAllInteractableElements();
     // // console.log(`interactableElems:\n${interactableElems}`);
-    
+
     let curDomTreeString = await curAgent.getDOMTree();
     // console.log(`domTreeString:\n${curDomTreeString}`);
     console.log("==");
-//    await curAgent.runStep("select the last layer in the layer editor", undefined, undefined);
+    //    await curAgent.runStep("select the last layer in the layer editor", undefined, undefined);
     // let elemInteractionsList = await curAgent.getElemInteractions("select the last layer in the layer editor");
     //  let parsedElemInteractionList = JSON.parse(elemInteractionsList);
     //  console.log(parsedElemInteractionList);
@@ -107,13 +107,13 @@ async function tryAgent() {
     // curAgent.getSortedElements("select the last interactable layer *list item*");
 
     await curAgent.runElemInteraction("click", "page.locator('CALCITE-LIST-ITEM:last-child')");
-    
+
     curDomTreeString = await curAgent.getDOMTree();
     // console.log(`afterDomTreeString:\n${curDomTreeString}`);
     console.log("==");
 
     //--let elemInteractionsList = await curAgent.getElemInteractions("select the 'Tasks' tab in the Forms nav bar");
-//    await curAgent.runStep("select the 'Tasks' tab in the Forms nav bar", "content related to creating layouts is now visible");
+    //    await curAgent.runStep("select the 'Tasks' tab in the Forms nav bar", "content related to creating layouts is now visible");
     // console.log(elemInteractionsList);
 
     await curAgent.runElemInteraction("click", "page.getByText('Tasks')"); //"CALCITE-TAB-TITLE > SPAN:has-text('Tasks')"
@@ -123,7 +123,7 @@ async function tryAgent() {
     console.log("==");
 
 
-//    await curAgent.runStep("select the button labeled 'New Layout' in the canvas") // , "The canvas has a new layout card and empty canvas instructions are removed.", undefined
+    //    await curAgent.runStep("select the button labeled 'New Layout' in the canvas") // , "The canvas has a new layout card and empty canvas instructions are removed.", undefined
     // elemInteractionsList = await curAgent.getElemInteractions("select the 'New layout' button in the canvas");
     // console.log(elemInteractionsList);
 
@@ -149,23 +149,23 @@ async function tryAgent() {
     // let elemInteractionsList = await curAgent.getElemInteractions("click the remove button");
     // await curAgent.runElemInteraction("click", "page.getByText('Remove')");
 
-    
+
     // await curAgent.runElemInteraction("click", "page.getByText('Duplicate')")
     // await curAgent.runStep("duplicate the first layout card", 
     //     "    - there is now a second layout card\n    - the second layout card is labeled that it is a copy of the first");
 
 
-   const beforeDOM = await curAgent.getDOMTree(true, false);
+    const beforeDOM = await curAgent.getDOMTree(true, false);
     // console.log(`afterDomTreeString:\n${curDomTreeString}`);
     // console.log("==");
     // await curAgent.getElemInteractions("click on the first layout card");
     // await curAgent.runStep("click on the first layout card", "layout builder panel is now visible")
     await curAgent.runElemInteraction("click", "page.locator('FA-LAYOUT-CARD')");
 
-//    await curAgent.runStep("Assert the check box next to the text that says 'Visible' is currently checked", undefined, beforeDOM);
+    //    await curAgent.runStep("Assert the check box next to the text that says 'Visible' is currently checked", undefined, beforeDOM);
     const afterDOM = await curAgent.getDOMTree(true, false); //true, false
     // const afterDOMAttr = await curAgent.getDOMTree(true, true);
-//    console.log(`afterDomTreeString:\n${afterDOMAttr}`);
+    //    console.log(`afterDomTreeString:\n${afterDOMAttr}`);
     console.log("==");
 
 
@@ -176,8 +176,8 @@ async function tryAgent() {
     //  and has options to remove and duplicate
     //-const response = await curAgent.askCorrectAction("click the dropdown menu button on the first layout card", "The dropdown menu for the first layout card is now visible.",beforeDOM, afterDOM);
 
-//    await curAgent.runStep("drag the 'Edit Field' layout element to the fa-action-card-list element in the canvas", "an 'Edit Field' card should be visible in the canvas and its properties panel shows up over the layout builder panel");
-//    await curAgent.runStep("Select the undo button (leftmost button in the group of buttons to the right of the Forms nav bar)");
+    //    await curAgent.runStep("drag the 'Edit Field' layout element to the fa-action-card-list element in the canvas", "an 'Edit Field' card should be visible in the canvas and its properties panel shows up over the layout builder panel");
+    //    await curAgent.runStep("Select the undo button (leftmost button in the group of buttons to the right of the Forms nav bar)");
     // doesnt work: await curAgent.getElemInteractions("drag the edit field layout element to the area which says 'Drag layout elements into this area'");
     // await curAgent.runElemInteraction("dragAndDrop", "page.getByText('Edit Field')", undefined, "page.getByText('Drag layout elements to this area')");
     //await curAgent.runElemInteraction("dragAndDrop", "page.getByText('Edit Field')", undefined, "page.locator('FA-ACTION-CARD-LIST')")
@@ -193,9 +193,9 @@ async function tryAgent() {
 
     // await curAgent.runElemInteraction("type", "page.getByLabel('Display name*').locator('input')", "test field name")
 
-//    await curAgent.getElemInteractions("type 'example title' into the input box under the text layout title under layout properties");
+    //    await curAgent.getElemInteractions("type 'example title' into the input box under the text layout title under layout properties");
     // await curAgent.runElemInteraction("type", "page.locator('fa-layout-properties').locator('face-validated-form').locator('face-validated-label').locator('face-validated-input').locator('calcite-input-text').locator('input')", "example title");
- 
+
     // await curAgent.runStep("click the save button", 
     //     "a calcite alert should display saying that the layout changes were saved successfully",
     //     undefined
@@ -218,7 +218,7 @@ async function tryAgent() {
     console.log("done")
 }
 
-async function runSampleTest(app_description:string, webapp_url:string, testFname:string, indent='    ') {
+async function runSampleTest(app_description: string, webapp_url: string, testFname: string, indent = '    ', metrics_csv:string = 'metrics.csv', shouldPass:boolean, closeAtEnd=false) {
     const prompt = promptSync();
     let testTime = performance.now();
 
@@ -234,14 +234,15 @@ async function runSampleTest(app_description:string, webapp_url:string, testFnam
 
     const lines = testFile.split('\n');
     const steps: Step[] = [];
-    let curStep: Step|null = null;
+    let curStep: Step | null = null;
+
     for (const line of lines) {
         const isSideEffect = line.startsWith(indent);
         const trimmedLine = line.trim();
 
         if (trimmedLine != '') {
             if (!isSideEffect) {
-                curStep = {step: line, sideEffects:undefined}
+                curStep = { step: line, sideEffects: undefined }
                 steps.push(curStep)
             }
             else {
@@ -257,11 +258,16 @@ async function runSampleTest(app_description:string, webapp_url:string, testFnam
         }
     }
 
-    let prevDOM:string|undefined;
+    let prevDOM: string | undefined;
 
-    const stepTimes:number[] = [];
+    const stepTimes: number[] = [];
 
-    for (const curStep of steps) {
+    let passingTest = true;
+    let [testOverallTime, testLLMTime, testPreprocTime, testPlaywrightTime] = [0,0,0,0];
+
+    for (let index = 0; index < steps.length; index++) {
+        const curStep = steps[index];
+
         const wfStep = curStep.step;
         const seStr = curStep.sideEffects?.map(sePlain => `${indent}- ${sePlain}`).join('\n');
 
@@ -286,7 +292,7 @@ async function runSampleTest(app_description:string, webapp_url:string, testFnam
                     const locatorCode = lineArr[1];
                     const value = lineArr.length > 3 ? lineArr[2] : undefined;
                     const toLocatorCode = lineArr.length > 4 ? lineArr[3] : undefined;
-                    
+
                     await curAgent.runElemInteraction(interaction, locatorCode, value, toLocatorCode);
                 }
             }
@@ -294,16 +300,20 @@ async function runSampleTest(app_description:string, webapp_url:string, testFnam
         else {
             // normal wf step doesn't need prev dom
             const passPrevDOM = isAssert ? prevDOM : undefined;
-            let stepTime = 0;
-            let passedStep:boolean = false;
-            [passedStep, prevDOM, stepTime] = await curAgent.runStep(wfStep, seStr, passPrevDOM);
-            stepTimes.push(stepTime / 1000); // get time in sec
+            let stepTimes: number[] = [0,0,0,0];
+            let passedStep: boolean = false;
+            [passedStep, prevDOM, stepTimes] = await curAgent.runStep(wfStep, seStr, passPrevDOM);
+            const [stepOverallTime, stepLLMTime, stepPreprocTime, stepPlaywrightTime] = stepTimes
+            testOverallTime += stepOverallTime;
+            testLLMTime += stepLLMTime;
+            testPreprocTime += stepPreprocTime;
+            testPlaywrightTime += stepPlaywrightTime;
 
             console.log(`${passedStep ? 'passed' : 'failed'} step.`)
             if (!passedStep) {
+                passingTest = false;
                 break;
             }
-
 
             // if (isAssert) {
             //     // pass in prevDOM (so can be compared to current)
@@ -317,7 +327,7 @@ async function runSampleTest(app_description:string, webapp_url:string, testFnam
             //     let passedStep:boolean = false;
             //     [passedStep, prevDOM, stepTime] = await curAgent.runStep(wfStep, seStr, undefined)
             //     stepTimes.push(stepTime / 1000); // get time in sec
-    
+
             //     console.log(`${passedStep ? 'passed' : 'failed'} step.`)
             //     if (!passedStep) {
             //         break;
@@ -331,6 +341,21 @@ async function runSampleTest(app_description:string, webapp_url:string, testFnam
         // console.log(`human eval: ${stepPerformedHuman}`);
     }
 
+    // write info to metrics_csv
+
+    // create write stream
+    const writeStream = fs.createWriteStream(metrics_csv, { flags: 'a' });
+    // const colNames = [
+    //     'testName',
+    //     'passed',
+    //     'OverallTime','LLMTime', 'PreprocTime', 'PlaywrightTime',
+    // ]
+    // // write col headers
+    // writeStream.write(`${colNames.join(',')}\n`);
+    const colVals = [testFname, passingTest, shouldPass, steps.length, testOverallTime, testLLMTime, testPreprocTime, testPlaywrightTime];
+    writeStream.write(`${colVals.join(',')}\n`);
+
+    console.log(passingTest ? "passed test." : "failed test.")
     console.log("done");
 
     testTime = performance.now() - testTime;
@@ -340,6 +365,28 @@ async function runSampleTest(app_description:string, webapp_url:string, testFnam
     stepTimes.forEach((time) => {
         console.log(time);
     })
+
+    if (closeAtEnd) {
+        await curAgent.closingActions();
+    }
+}
+
+async function repeatTests(testFnameList:string[], shouldPassList:boolean[], nReps:number =1) {
+    if (testFnameList.length !== shouldPassList.length) {
+        console.log("Error! list lengths of repeatTests do not match!");
+        return false;
+    }
+    else {
+        console.log(`training on all ${testFnameList.length} tests`);
+        for (let i = 0; i < testFnameList.length; i++) {
+            const testFname = testFnameList[i];
+            const shouldPass = shouldPassList[i];
+            for (let i=0; i<nReps; i++) {
+                await runSampleTest("app that lets you configure layers and layouts", webapp_url, testFname, undefined, undefined, shouldPass, true);
+            }
+        }
+        return true;
+    }
 }
 
 const webapp_url = "https://local.arcgis.com:4200/maps/3/forms";
@@ -366,4 +413,12 @@ const out_fpath = path.join(training_out_dir, "test.txt");
 
 // run(webapp_url, out_fpath);
 //tryAgent();
-runSampleTest("app that lets you configure layers and layouts", webapp_url, "./NL_tests/test4.txt");
+
+//"./NL_tests/test4.txt"
+//"test1.txt", 
+runSampleTest("app that lets you configure layers and layouts", webapp_url, "./NL_tests/test4.txt", undefined, undefined, true, true);
+
+// const testCaseFpaths = ["test2.txt", "test3.txt", "test7.txt"].map(fname => `./NL_tests/${fname}`);
+// const shouldPass = [true, true, true, true]
+
+// repeatTests(testCaseFpaths, shouldPass, 10);
