@@ -106,7 +106,7 @@ async function tryAgent() {
     // curAgent.runElemInteraction(firstElemInteraction["action"], firstElemInteraction["selector"]);
     // curAgent.getSortedElements("select the last interactable layer *list item*");
 
-    await curAgent.runElemInteraction("click", "page.locator('CALCITE-LIST-ITEM:last-child')");
+    await curAgent.runElemInteraction("click", "curPage.locator('CALCITE-LIST-ITEM:last-child')");
 
     curDomTreeString = await curAgent.getDOMTree();
     // console.log(`afterDomTreeString:\n${curDomTreeString}`);
@@ -116,7 +116,7 @@ async function tryAgent() {
     //    await curAgent.runStep("select the 'Tasks' tab in the Forms nav bar", "content related to creating layouts is now visible");
     // console.log(elemInteractionsList);
 
-    await curAgent.runElemInteraction("click", "page.getByText('Tasks')"); //"CALCITE-TAB-TITLE > SPAN:has-text('Tasks')"
+    await curAgent.runElemInteraction("click", "curPage.getByText('Tasks')"); //"CALCITE-TAB-TITLE > SPAN:has-text('Tasks')"
 
     curDomTreeString = await curAgent.getDOMTree();
     // console.log(`afterDomTreeString:\n${curDomTreeString}`);
@@ -128,7 +128,7 @@ async function tryAgent() {
     // console.log(elemInteractionsList);
 
     // may have to try multiple options in the list to get correct one
-    await curAgent.runElemInteraction("click", "page.getByText('New layout', { exact: true })"); //"page.getByRole('button', { name: 'New layout' })" //"CALCITE-BUTTON:contains('New layout')"
+    await curAgent.runElemInteraction("click", "curPage.getByText('New layout', { exact: true })"); //"page.getByRole('button', { name: 'New layout' })" //"CALCITE-BUTTON:contains('New layout')"
 
     // await curAgent.runElemInteraction("click", "page.getByText('Form', { exact: true })");
 
@@ -140,11 +140,11 @@ async function tryAgent() {
     // await curAgent.runStep("click on the discard changes button in the modal");
     //await curAgent.runElemInteraction("click", "page.getByText('Discard changes')");
     // await curAgent.runStep("click on the discard changes button in the modal", "    - the form tab is selected and the form builder is visible");
-    // let elemInteractionsList = await curAgent.getElemInteractions("click the dropdown menu button on the first layout card");
+    //let elemInteractionsList = await curAgent.runStep("click the dropdown menu button on the first layout card", "    - options to remove and duplicate for the first layout card are now visible");
     // await curAgent.runElemInteraction("click", "page.locator('FA-LAYOUT-CARD CALCITE-DROPDOWN CALCITE-BUTTON')");
 
     curDomTreeString = await curAgent.getDOMTree();
-    console.log(`afterDomTreeString:\n${curDomTreeString}`);
+    //console.log(`afterDomTreeString:\n${curDomTreeString}`);
     console.log("==");
     // let elemInteractionsList = await curAgent.getElemInteractions("click the remove button");
     // await curAgent.runElemInteraction("click", "page.getByText('Remove')");
@@ -155,15 +155,17 @@ async function tryAgent() {
     //     "    - there is now a second layout card\n    - the second layout card is labeled that it is a copy of the first");
 
 
-    const beforeDOM = await curAgent.getDOMTree(true, false);
+    //const beforeDOM = await curAgent.getDOMTree(true, false);
     // console.log(`afterDomTreeString:\n${curDomTreeString}`);
     // console.log("==");
     // await curAgent.getElemInteractions("click on the first layout card");
     // await curAgent.runStep("click on the first layout card", "layout builder panel is now visible")
-    await curAgent.runElemInteraction("click", "page.locator('FA-LAYOUT-CARD')");
+    await curAgent.runElemInteraction("click", "curPage.locator('FA-LAYOUT-CARD')");
 
-    //    await curAgent.runStep("Assert the check box next to the text that says 'Visible' is currently checked", undefined, beforeDOM);
-    const afterDOM = await curAgent.getDOMTree(true, false); //true, false
+    let beforeDOM = await curAgent.getDOMTree(true, false);
+    const [passedStep, afterDOMAttr, times] = await curAgent.runStep("Assert the check box next to the text that says 'Visible' is currently not checked", undefined, beforeDOM);
+    console.log(`passed assertion: ${passedStep}`);
+    // const afterDOM = await curAgent.getDOMTree(true, false); //true, false
     // const afterDOMAttr = await curAgent.getDOMTree(true, true);
     //    console.log(`afterDomTreeString:\n${afterDOMAttr}`);
     console.log("==");
@@ -186,10 +188,10 @@ async function tryAgent() {
     //     "    - the text in the input box under the text 'layout title' should now be titled 'example title'\n    - above the layout editor there should be text saying 'example title'",
     //     undefined
     // );
-    await curAgent.runElemInteraction("type", "page.getByLabel('Layout title').locator('input')", "test layout title");
-    await curAgent.getDOMTree();
+    // await curAgent.runElemInteraction("type", "page.getByLabel('Layout title').locator('input')", "test layout title");
+    // await curAgent.getDOMTree();
 
-    await curAgent.runElemInteraction("click", "page.getByText('Layouts').locator('..').getByRole('combobox')");
+    // await curAgent.runElemInteraction("click", "page.getByText('Layouts').locator('..').getByRole('combobox')");
 
     // await curAgent.runElemInteraction("type", "page.getByLabel('Display name*').locator('input')", "test field name")
 
@@ -310,6 +312,7 @@ async function runSampleTest(app_description: string, webapp_url: string, testFn
             testPlaywrightTime += stepPlaywrightTime;
 
             console.log(`${passedStep ? 'passed' : 'failed'} step.`)
+            // stop early if failed step
             if (!passedStep) {
                 passingTest = false;
                 break;
@@ -377,13 +380,17 @@ async function repeatTests(testFnameList:string[], shouldPassList:boolean[], nRe
         return false;
     }
     else {
+        const runNTimes = async (testFname:string, shouldPass:boolean) => {
+            for (let i=0; i<nReps; i++) {
+                await runSampleTest("app that lets you configure layers and layouts", webapp_url, testFname, undefined, undefined, shouldPass, true);
+            }
+        }
+
         console.log(`training on all ${testFnameList.length} tests`);
         for (let i = 0; i < testFnameList.length; i++) {
             const testFname = testFnameList[i];
             const shouldPass = shouldPassList[i];
-            for (let i=0; i<nReps; i++) {
-                await runSampleTest("app that lets you configure layers and layouts", webapp_url, testFname, undefined, undefined, shouldPass, true);
-            }
+            await runNTimes(testFname, shouldPass);
         }
         return true;
     }
@@ -416,9 +423,10 @@ const out_fpath = path.join(training_out_dir, "test.txt");
 
 //"./NL_tests/test4.txt"
 //"test1.txt", 
-runSampleTest("app that lets you configure layers and layouts", webapp_url, "./NL_tests/test4.txt", undefined, undefined, true, true);
+//runSampleTest("app that lets you configure layers and layouts", webapp_url, "./NL_tests/test3.txt", undefined, undefined, true, true);
 
-// const testCaseFpaths = ["test2.txt", "test3.txt", "test7.txt"].map(fname => `./NL_tests/${fname}`);
-// const shouldPass = [true, true, true, true]
 
-// repeatTests(testCaseFpaths, shouldPass, 10);
+//const testCaseFpaths = ["test1.txt", "test2.txt", "test3.txt", "test4.txt", "test7.txt"].map(fname => `./NL_tests/${fname}`);
+//const shouldPass = [true, true, true, true, false]
+
+repeatTests(["./NL_tests/test3.txt"], [true], 10);

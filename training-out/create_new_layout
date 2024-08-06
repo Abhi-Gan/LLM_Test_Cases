@@ -1,4 +1,4 @@
-"click", "page.locator('CALCITE-LIST-ITEM:last-child')"
-"click", "page.getByText('Tasks')"
-"click", "page.getByText('New layout', { exact: true })"
-"click", "page.locator('FA-LAYOUT-CARD')"
+"click", "curPage.locator('CALCITE-LIST-ITEM:last-child').locator('visible=true')"
+"click", "curPage.getByText('Tasks').locator('visible=true')"
+"click", "curPage.getByText('New layout', { exact: true }).locator('visible=true')"
+"click", "curPage.locator('FA-LAYOUT-CARD').locator('visible=true')"

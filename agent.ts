@@ -412,15 +412,24 @@ export class WebAgent {
                     }
 
                     // get aria label, if any
+                    // also get testId attribute if any
                     let ariaLabel = ''
-                    if (this.domElement instanceof Element && this.domElement.ariaLabel) {
-                        ariaLabel = this.domElement.ariaLabel.trim()
-                        if (ariaLabel.length > 0) {
-                            ariaLabel = ` (aria-label: \"${ariaLabel}\")`
+                    let testIdStr = ''
+                    if (this.domElement instanceof Element) {
+                        if (this.domElement.ariaLabel) {
+                            ariaLabel = this.domElement.ariaLabel.trim()
+                            if (ariaLabel.length > 0) {
+                                ariaLabel = ` (aria-label: \"${ariaLabel}\")`
+                            }
+                        }
+
+                        const testId = this.domElement.getAttribute('data-testid');
+                        if (testId) {
+                            testIdStr = ` (data-testid: \"${testId}\")`
                         }
                     }
                     const mutationsInfo = _showMutations && attrMutations.length > 0 ? JSON.stringify(attrMutations) : '';
-                    const tagDisp = `${this.tag}${ariaLabel}${mutationsInfo}`;
+                    const tagDisp = `${this.tag}${testIdStr}${ariaLabel}${mutationsInfo}`;
 
                     if (collapseShadow && this.tag == grayRoot.SHADOWROOT_TAG) {
                         // treat as leaf node
@@ -597,7 +606,7 @@ Only provide the list and no other information or text.`;
         let prevErrorsMessage = '';
         if (prevErrorsList && prevErrorsList.length > 0) {
             prevErrorsMessage = `
-Avoid selectors that may cause these Errors; try different ones:
+Avoid locators that may cause these Errors; try different ones or decrease the specificity.
 ${WebAgent.tripleBackQuotes}
 ${prevErrorsList.join('\n')}
 ${WebAgent.tripleBackQuotes}
@@ -613,7 +622,7 @@ ${domTreeString}
 ${WebAgent.tripleBackQuotes}
 
 In this DOM Tree Structure, '...' refers to a Shadow Root.
-The number of the dashes ('---') conveys the relationship between an element and the element in the previous line; longer means child, same means sibling, etc.
+The length of the dashes ('---') conveys the relationship between an element and the element in the previous line; longer means child, same means sibling, shorter means sibling of an ancestor.
 
 Your task is to:
 \`\`\`
@@ -631,30 +640,34 @@ Each interaction should be provided in JSON format with the following structure:
 Follow the following steps as a guide:
 
 Step 1: What part(s) of the DOM Tree above is relevant to the step "${wfStep}"?
- - consider a user might say something that isn't technically correct. For example when they say to 'click the add button' the element being referred to may not literally have 'button' tag, or may have spelling mistakes.
+ - consider a user might say something that isn't technically correct. For example if they say to 'click the add button' the element being referred to may not literally have 'button' tag, or have its text exactly match with 'add'.
  - You must infer what elements are relevant based on the semantics of the step and context provided by the DOM.
 
 Step 2: What type of interaction do you want to perform on the above element? (e.g. click, type, etc.)
 
 Step 3: Based on your answer to Step 1, identify the code that in Playwright that should be passed into "locatorCode" that can be used to find the relevant element via a locator.
 
-Note you can chain locators like page.getByRole('...').locator('...').getByText('...').
-Minimize the number of chained locators while maintaining specificity accurate to the DOM.
+Note you can chain locators like so: page.getByRole('...').locator('...').getByText('...').
+However, minimize the number of chained locators unless needed.
+For example if there's only one element that would match getByText('add'), there is no need to chain locators before/after.
+
+Use getByTestId if you can. This locates elements by data-testid attribute and is easier than chaining.
 
 The locators you can may are listed in the examples below.
 
 Also consider these notes:
- - getByRole locates elements by its implicit role; however doesn't work for custom elements. ex: works for button, but not for CALCIT-LIST-ITEM
- - getByText matches elements by text. Use { exact: true } and consider applying another locator before chaining getByText.
+ - getByRole locates elements by its implicit role; however doesn't work for custom elements. ex: works for button, but not for CALCITE-LIST-ITEM
+ - getByText matches elements by text. Use exact matching ({ exact: true }). Consider applying another locator before chaining getByText.
  - Use getByLabel to find alements by associated <label> or aria-label attribute
- - Get the nth match using the nth= locator with a 0 based index; e.g. .locator('nth=4')
- - Minimize usage of XPath / CSS selectors as they cannot go through a Shadow DOM and are more brittle than other selectors; if needed use chaining instead
- - we will always add a .first() locator to find the first matching element.
+ - If you want the nth match using the nth= locator with a 0 based index; e.g. .nth(4).
+ - Minimize usage of XPath / CSS selectors as they cannot go through a Shadow DOM and are more brittle than other locators; use chaining and/or other locators instead where possible.
+ - we will add some modifications to your locator to guarantee finding the first visible matching element.
  
-We will evaluate the code passed into "locatorCode" to get the first matching element in Playwright. 
+We will evaluate the code passed into "locatorCode" in Playwright. 
 You are looking at test data so try not to refer to the test data text in your selectors.
 
 Step 4: Verify your code is well-formed Playwright code as described above. If there are errors, do your best to fix them. Try to use a different locator.
+${prevErrorsMessage}
 
 Step 5: Output the interaction in the JSON format described earlier.
 Your output should be in JSON format. No trailing commas.
@@ -676,7 +689,6 @@ ${WebAgent.tripleBackQuotes}
 ${WebAgent.tripleBackQuotes}
 
 Recall, I need to: ${wfStep} 
-${prevErrorsMessage}
 Output:\n`
 
         // console.log(elemInteractionPrompt);
@@ -723,8 +735,8 @@ Output:\n`
             (window as any).mutations.clear() 
         })
 
-        const runnableLocatorCode = locatorCode.replace("page", "curPage") //.replace("getByLabelText", "getByText").replace("firstChild", "first");
-        const locator = await eval(`${runnableLocatorCode}`);
+        // Always add .locator('visible=true') at the beginning as you only know about visible elements. Otherwise the locator might match something not in the DOM.
+        const locator = await eval(`${locatorCode}`);
         const firstMatchLocator = locator.first({ timeout: WebAgent.MAX_WAIT });
         await firstMatchLocator.waitFor({ timeout: WebAgent.MAX_WAIT })
 
@@ -753,7 +765,7 @@ Output:\n`
                 console.log("drag and dropping")
                 // drag and drop
                 // ensure to selectors is input
-                const runnableToLocatorCode = toLocatorCode!.replace("page", "curPage");
+                const runnableToLocatorCode = toLocatorCode!//.replace("page", "curPage");
                 const toLocator = await eval(`${runnableToLocatorCode}`);
                 const firstMatchToLocator = toLocator.first();
                 await firstMatchToLocator.waitFor({ timeout: WebAgent.MAX_WAIT })
@@ -795,7 +807,7 @@ ${expectations}
 
 Prove if the step was performed. Answer Yes/No and Briefly explain what evidence supports your claim.
 
-Step 2: Score the agent's action between -1 and 1 in regards to the desired action. 
+Step 3: Score the agent's action between -1 and 1 in regards to the desired action. 
 Reward the agent for correct responses and punish it for incorrect ones so it eventually learns how to accomplish the task.
 
 Format your output like so:
@@ -830,8 +842,18 @@ ${WebAgent.tripleBackQuotes}
 
 Note that tree only displays elements of the DOM that are visible (based on Bounding Rectangle and CSS Styling) and within the visible window.
 It is annotated to show changes in attributes due to the most recent interaction of the agent with the web page.
+These annotations are in the format ["attribute1>:oldValue->newValue","attribute2>:oldValue->newValue",...], where oldValue and newValue are values assigned to the attribute before and after the interaction, respectively.
+Consider a value of 'undefined' signifies the attribute not being present.
+A value of '' (empty string) represents the attribute being present but without any assigned value. This usually means the presence of the attribute is used as a flag.
 
-Ouput one of the three following options:
+Work through the following steps:
+
+Step 1: Which element(s) are relevant to understanding the assertion? 
+Step 2: Which attributes of these elements are relevant?
+Step 3: How have their values changed before/after the interaction?
+Step 4: What does this signify?
+
+Step 3: Output one of the three following options:
 1. 'Ready' if you are ready to answer whether the assertion is true
 2. '2' if you need to know the full list of attributes for a particular element in the DOM
 3. '3' if you need the DOM Tree before the interaction
@@ -867,7 +889,7 @@ Your Output (code only):
 
             // evaluate relevant locator
             const curPage = this.page!
-            const runnableLocatorCode = locatorCodeResponse.replace("page", "curPage");
+            const runnableLocatorCode = this.modifyLocatorCode(locatorCodeResponse); // locatorCodeResponse.replace("page", "curPage");
             const locator:Locator = await eval(`${runnableLocatorCode}`);
             const firstMatchLocator = locator.first();
             await firstMatchLocator.waitFor({ timeout: WebAgent.MAX_WAIT })
@@ -913,8 +935,8 @@ Considering your answers to the above questions, provide evidence, then whether 
 Format like so:
 ${WebAgent.tripleBackQuotes}
 {
-    "isAssertionPassed": <'true' if assertion is true; 'false' otherwise>
-    "evidence": <brief evidence>
+    "evidence": <brief evidence>,
+    "isAssertionPassed": <'true' if assertion is true; 'false' otherwise>,
     "confidence": <confidence in correctness of response (0-1)>
 }
 ${WebAgent.tripleBackQuotes}
@@ -923,6 +945,13 @@ Your Response:
 `
         const assertionResult = await this.getLLMResponse(nextPrompt, history);
         return assertionResult ?? '';
+    }
+
+    public modifyLocatorCode(locatorCode:string|undefined) {
+        console.log(`orign locator: ${locatorCode}`)
+        const runnableLocatorCode = locatorCode?.replace(/page/g, 'curPage').replace(').', ').locator(\'visible=true\').').replace(/first\./g,'first().') //.replace("getByLabelText", "getByText").replace("firstChild", "first");
+        console.log(`modifiedLocator: ${runnableLocatorCode}`)
+        return runnableLocatorCode;
     }
 
     // TODO: edit params
@@ -948,7 +977,7 @@ Your Response:
             // parse response
             if (response.trim().length > 0) {
                 const cleanedResponse = JSON5.parse(response.replace(/```json|```/g, ''));
-                passedStep = cleanedResponse["isAssertionPassed"];
+                passedStep = cleanedResponse["isAssertionPassed"] === 'true';
             }
         }
         else {
@@ -971,7 +1000,7 @@ Your Response:
 
             const errorMsgs:string[] = [];
             let numTries = 0;
-            while(!successfulInteraction && numTries < 4) {
+            while(!successfulInteraction && numTries < 3) {
                 try {
                     tempTime = performance.now();
                     const elemInteractionsStr = await this.getElemInteractions(wfStep, errorMsgs);
@@ -980,16 +1009,21 @@ Your Response:
                     // Remove the "```json" and "```" tags from the string
                     const cleanedResponse = elemInteractionsStr.replace(/```json|```/g, '');
                     const elemInteractionObj = JSON5.parse(cleanedResponse);
+                    
+                    let origLocatorCode = '';
+                    let origToLocatorCode = '';
                     try {
                         const curDict = elemInteractionObj; //elemInteractionsList[curIdx];
                         const action = curDict["action"];
-                        const locatorCode = curDict["locatorCode"];
+                        origLocatorCode = curDict["locatorCode"];
+                        const runnableLocatorCode = this.modifyLocatorCode(origLocatorCode)!;
                         const value = curDict["value"];
-                        const toLocatorCode = curDict["toLocatorCode"];
+                        origToLocatorCode = curDict["toLocatorCode"];
+                        const runnableToLocatorCode = this.modifyLocatorCode(origToLocatorCode);
         
                         // perform action
                         tempTime = performance.now();
-                        await this.runElemInteraction(action, locatorCode, value, toLocatorCode);
+                        await this.runElemInteraction(action, runnableLocatorCode, value, runnableToLocatorCode);
                         cumPlaywrightTime += performance.now() - tempTime;
                         
                         tempTime = performance.now();
@@ -1014,9 +1048,9 @@ Your Response:
                         console.log(`Error with step ${wfStep}!\n${error}`)
 
                         const responseStr = JSON.stringify(elemInteractionObj)
-                        const errorStr:string = `${error}`//.slice(0,700)
+                        const errorStr:string = `${error}`.slice(0,700)
                         // ${responseStr}
-                        const errorInfoStr = `Bad response; led to error: ${errorStr}`;//...`;
+                        const errorInfoStr = `${origLocatorCode} not found; Try a different locator. Error: ${errorStr}`;
                         errorMsgs.push(errorInfoStr);
                     }
                 }
@@ -1255,7 +1289,7 @@ Your output should be in a JSON stringified list format. For example,
 [{"action": “enter”, "locator”:”page.getByLabel('Password’)”}]
 // getByText
 [{"action": “tab”, "locator”:”page.getByText('Welcome, John')”}]
-// getByTestID
+// getByTestId
 [{"action": “type”, "locator”:”page.getByTestId('directions’)”, “value”:”180 New York Streets”}]
 // XPath:
 [{"action": "click", "locator": "page.locator('[data-test-interactions]');"}]

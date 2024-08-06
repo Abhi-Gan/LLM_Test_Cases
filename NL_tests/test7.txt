@@ -5,3 +5,4 @@ click the undo button
     the canvas is now empty
     the undo button can no longer be clicked
     the redo button can be clicked
+Assert the save button can be clicked
